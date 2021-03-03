@@ -1,0 +1,40 @@
+[
+    {
+        "hostName": "Aayush",
+        "partyName": "bliss",
+        "songs": [
+            {
+                "title": "Blastoyz - Mandala",
+                "url": "https://www.youtube.com/watch?v=FHVD9ft_ANw",
+                "index": "j3fmtl59jxn"
+            },
+            {
+                "title": "Melanie Martinez - Play Date (Lyrics)",
+                "url": "https://www.youtube.com/watch?v=xhaI-lLiUFA"
+            },
+            {
+                "title": "【Ayasa】告白の夜 (The reason why) 〜Ayasa Theater episode 7  \"Ayasa ORIGINAL MUSIC\"",
+                "url": "https://www.youtube.com/watch?v=qDvKVxFe7VA"
+            },
+            {
+                "title": "White Noise Black Screen | Sleep, Study, Focus | 10 Hours",
+                "url": "https://www.youtube.com/watch?v=nMfPqeZjc2c"
+            },
+            {
+                "title": "Joel Adams - Please Don't Go (Official Music Video)",
+                "url": "https://www.youtube.com/watch?v=S2oxFIsENgM"
+            },
+            {
+                "title": "Adele - Hello",
+                "url": "https://www.youtube.com/watch?v=YQHsXMglC9A"
+            },
+            {
+                "title": "Captain Hook - Deep Into Nature [Visualization]",
+                "url": "https://www.youtube.com/watch?v=NhQLBqtqZpE"
+            }
+        ],
+        "songStartTime": "2021-02-02T17:14:30.000Z",
+        "currentSong": "https://www.youtube.com/watch?v=FHVD9ft_ANw",
+        "tutorialStatus": false
+    }
+]
