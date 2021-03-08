@@ -32,6 +32,7 @@ import * as Service from "./../Services/ServiceCalls";
 import Wave from "@foobar404/wave";
 import socketIOClient from "socket.io-client";
 import Tutorial from "../Tutorial/Tutorial";
+import MobileTutorial from "../Mobile Tutorial/MobileTutorial"
 
 const useStyles = () => ({
   tabsRootContainer: {
@@ -611,7 +612,7 @@ class Host extends Component {
         {isMobile ? (
           // Mobile Screens
           <>
-            {this.props.globalState.displayTutorial ? "Hello" : null}
+            {this.props.globalState.displayTutorial ? <MobileTutorial /> : null}
 
             <div className="player-and-list-component"></div>
           </>
