@@ -9,9 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently --kill-others-on-fail \"nodemon server.js\" \"(cd synk-music && npm start)\"",
-    "dev": "concurrently --kill-others-on-fail \"nodemon server.js\" \"(cd synk-music && npm start)\"",
-    "build": "cd synk-music && npm run build"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
   },
   "author": "",
   "license": "ISC",
