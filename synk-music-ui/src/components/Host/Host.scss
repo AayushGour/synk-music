@@ -1,0 +1,215 @@
+.dashboard {
+  height: calc(100% - 80px);
+}
+
+.player-container {
+  width: 80vh;
+  height: 80vh;
+  border-radius: 50%;
+  box-shadow: 0 0 10px white;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: change-aura 5s 1s infinite alternate ease-in-out both;
+  z-index: 5;
+  overflow: hidden;
+}
+
+@media screen and (display-mode: fullscreen) {
+  .player-container {
+    width: 72vh;
+    height: 72vh;
+
+  }
+}
+
+.list-left,
+.list-right {
+  width: 50%;
+  height: 60vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: rgb(37, 37, 37);
+  box-shadow: white 0px 0px 10px;
+  overflow: hidden;
+}
+
+.list-right {
+  align-items: flex-end;
+}
+
+@keyframes change-aura {
+  0% {
+    box-shadow: 0 0 20px 0 red inset, 0 0 10px white;
+  }
+
+  25% {
+    box-shadow: 0 0 20px 0 purple inset, 0 0 10px white;
+  }
+
+  50% {
+    box-shadow: 0 0 20px 0 blue inset, 0 0 10px white;
+  }
+
+  75% {
+    box-shadow: 0 0 20px 0 blueviolet inset, 0 0 10px white;
+  }
+
+  100% {
+    box-shadow: 0 0 20px 0 green inset, 0 0 10px white;
+  }
+}
+
+@keyframes change-aura-tutorial {
+  0% {
+    box-shadow: 0 0 20px 0 red inset,
+  }
+
+  25% {
+    box-shadow: 0 0 20px 0 purple inset,
+  }
+
+  50% {
+    box-shadow: 0 0 20px 0 blue inset,
+  }
+
+  75% {
+    box-shadow: 0 0 20px 0 blueviolet inset,
+  }
+
+  100% {
+    box-shadow: 0 0 20px 0 green inset,
+  }
+}
+
+.player-and-list-component {
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* margin-top: 30px; */
+  transform: translate(0, 25%);
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.MuiButtonBase-root.MuiTab-root {
+  background: transparent;
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 16px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+@media screen and (max-device-width: 768px){
+  .MuiButtonBase-root.MuiTab-root {
+    color: white;
+    font-weight: 800;
+    font-size: small;
+    padding: 16px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+}
+
+.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #01a4e9;
+}
+
+.tabpanel-inner-container {
+  height: 100%;
+  width: 100%;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-results-image {
+  width: 150px;
+  height: auto;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: white 0px 0px 5px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #101010;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #01a4e9;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #01a4e999;
+}
+
+
+.pulse-div {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 59vh;
+  height: 59vh;
+  border: 5px solid white;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    border: 5px solid white;
+    width: 59vh;
+    height: 59vh;
+    opacity: 1;
+  }
+
+  100% {
+    width: 80vh;
+    height: 80vh;
+    border: 10px solid #01a4e9;
+    opacity: 0;
+    // filter: blur(5px);
+  }
+}
+
+.hide-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+}
+
+@keyframes animate-div {
+  0% {
+    background-color: rgba(0, 0, 0, 0.8);
+    filter: blur(5px)
+  }
+
+  100% {
+    background-color: transparent;
+    filter: blur(0);
+  }
+}

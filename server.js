@@ -1,5 +1,6 @@
 const fs = require("fs");
-const app = require("express")();
+const express = require("express");
+const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 var ss = require('socket.io-stream');
@@ -7,6 +8,7 @@ const bodyParser = require('body-parser');
 const ytdl = require('ytdl-core')
 const ffmpegPath = require('ffmpeg-static');
 const ffmpeg = require("fluent-ffmpeg");
+const path = require('path');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
@@ -15,6 +17,12 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 
 // read and parse application/json
 app.use(bodyParser.json());
+
+app.use(express.static(path.resolve('./synk-music-ui/build')))
+
+app.get('/', (request, response) => {
+    response.sendFile(path.resolve('./synk-music-ui/build', 'index.html'));
+  });
 
 // let rawData = fs.readFileSync("./client-info.json")
 // let data = JSON.parse(rawData)
