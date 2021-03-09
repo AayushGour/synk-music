@@ -7,6 +7,10 @@ const bodyParser = require('body-parser');
 const ytdl = require('ytdl-core')
 const ffmpegPath = require('ffmpeg-static');
 const ffmpeg = require("fluent-ffmpeg");
+
+const isDev = process.env.NODE_ENV !== 'production';
+const PORT = process.env.PORT || 5000;
+
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 // read and parse application/json
@@ -289,6 +293,6 @@ io.on("connection", (socket) => {
 
 })
 
-http.listen(5000, () => {
+http.listen(PORT, () => {
     console.log("listening on port: 5000")
 })
