@@ -3,14 +3,15 @@ const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
-var ss = require("socket.io-stream");
+const ss = require("socket.io-stream");
 const bodyParser = require("body-parser");
 const ytdl = require("ytdl-core");
 const ffmpegPath = require("ffmpeg-static");
 const ffmpeg = require("fluent-ffmpeg");
 const path = require("path");
 const constants = require("./constants.js")
-var service = require("./databaseService.js");
+const service = require("./databaseService.js");
+const ytsr = require("ytsr");
 
 const isDev = process.env.NODE_ENV !== "production";
 const PORT = process.env.PORT || 5000;
@@ -19,7 +20,6 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 
 // read and parse application/json
 app.use(bodyParser.json());
-
 app.use(express.static(path.resolve("./synk-music-ui/build")));
 
 // let rawData = fs.readFileSync("./client-info.json")
@@ -107,6 +107,17 @@ app.delete("/deleteParty", (req, res) => {
         }
     })
 });
+
+app.get("/youtubeSearch", (req, res) => {
+    try {
+        ytsr(req.query.searchText, { limit: 40 }).then(searchResults => {
+            res.status(200).send(searchResults);
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error)
+    }
+})
 
 app.get("/getCurrentSong", (req, res) => {
     let rawData = fs.readFileSync("userData.json");

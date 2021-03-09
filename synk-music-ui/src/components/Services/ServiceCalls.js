@@ -77,3 +77,11 @@ export function deleteParty(data) {
         }
     })
 }
+export function youtubeSearch(data){
+    return axios.get("/youtubeSearch", {
+        headers:{
+            "Content-Type":"application/json"
+        },
+        params: data
+    })
+}

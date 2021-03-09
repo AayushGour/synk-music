@@ -63,6 +63,7 @@ const useStyles = () => ({
     background: "linear-gradient(to left, #101010, #252525)",
   },
   listRoot: {
+    marginTop:"5px",
     width: "100%",
     height: "100%",
     overflowY: "auto",
@@ -408,9 +409,10 @@ class Host extends Component {
 
   youtubeSearchFunction = () => {
     this.setState({ loaderDisplay: true }, () => {
-      simpleyt(this.state.searchBarText).then((result) => {
+      var requestObject = {searchText: this.state.searchBarText, partyName: this.userData.partyName}
+      Service.youtubeSearch(requestObject).then((result) => {
         console.log(result);
-        this.setState({ searchResults: result, loaderDisplay: false });
+        this.setState({ searchResults: result.data.items, loaderDisplay: false });
       });
     });
   };
@@ -554,7 +556,10 @@ class Host extends Component {
     searchResults =
       this.state.searchResults.length === 0
         ? []
-        : this.state.searchResults.map((item, index) => {
+        : this.state.searchResults.filter((item)=>{
+          return item.type === "video"
+        }).map((item, index) => {
+          console.log(item)
             return (
               <ListItem
                 className={classes.searchResultListItemRoot}
@@ -563,7 +568,7 @@ class Host extends Component {
                   var existingSongs = this.state.existingSongs;
                   var song = {
                     title: item.title,
-                    url: item.uri,
+                    url: item.url,
                   };
                   existingSongs.push(song);
 
