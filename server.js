@@ -33,8 +33,8 @@ app.use(express.static(path.resolve("./synk-music-ui/build")));
 var input = null;
 app.get("/getStream", (req, res) => {
     // get video from youtube and stream to client
-    let rawData = fs.readFileSync("userData.json");
-    let userData = JSON.parse(rawData);
+    // let rawData = fs.readFileSync("userData.json");
+    // let userData = JSON.parse(rawData);
     // let userIndex = userData.indexOf(userData.find((item) => {
     //     return item.partyName === req.query.partyName
     // }))
@@ -49,14 +49,14 @@ app.get("/getStream", (req, res) => {
     // } else {
     //     res.status(400).send("Bad Request!!! Please check the values")
     // }
-    if (
-        userData.find((item) => {
-            return item.partyName === req.query.partyName;
-        }) &&
-        req.query.url !== ""
-    ) {
-        try {
-            var stream = ytdl(req.query.url, { filter: "audioonly" });
+    // if (
+    //     userData.find((item) => {
+    //         return item.partyName === req.query.partyName;
+    //     }) &&
+    //     req.query.url !== ""
+    // ) {
+    //     try {
+    //         var stream = ytdl(req.query.url, { filter: "audioonly" });
             // var totalAudioLength = 10000
             // res.setHeader("Accept-Ranges", "bytes")
             // videoID = ytdl.getVideoID(req.query.url)
@@ -75,13 +75,25 @@ app.get("/getStream", (req, res) => {
             //     "Content-Length": totalAudioLength,
             //     "Content-Range": "bytes 0-" + totalAudioLength
             // })
-            stream.pipe(res);
-        } catch (exception) {
-            res.status(500).send(exception);
+    //         stream.pipe(res);
+    //     } catch (exception) {
+    //         res.status(500).send(exception);
+    //     }
+    // } else {
+    //     res.status(400).send("Bad Request!!! Please check the values");
+    // }
+    service.findByPartyName(req.query.partyName).then(result=>{
+        if(result !== null && req.query.url !== ""){
+            try {
+                var stream = ytdl(req.query.url, { filter: "audioonly" });
+                stream.pipe(res);
+            } catch (error) {
+                res.status(500).send(exception);
+            }
+        }else {
+            res.status(400).send("Bad Request!!! Please check the values");
         }
-    } else {
-        res.status(400).send("Bad Request!!! Please check the values");
-    }
+    })
 });
 app.get("/pause", (req, res) => {
     input = fs.createReadStream("audio.mp3");
