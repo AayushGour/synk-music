@@ -270,7 +270,7 @@ class Host extends Component {
 
       fetch(getDataUrl, {
         mode: "cors",
-        method: "GET",
+        method: "GET"
       })
         .then((response) => {
           return response.text();

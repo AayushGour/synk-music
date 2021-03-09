@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node":"14.15.4",
-    "npm":"6.14.10"
+    "node": "14.15.4",
+    "npm": "6.14.10"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently --kill-others-on-fail \"nodemon server.js\" \"(cd synk-music-ui && npm start)\"",
     "dev": "concurrently --kill-others-on-fail \"nodemon server.js\" \"(cd synk-music-ui && npm start)\"",
-    "build": "cd synk-music-ui && npm install && npm run build"
+    "build": "cd synk-music-ui && npm install && npm run build",
+    "local":"nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "express": "^4.17.1",
     "ffmpeg-static": "^4.2.7",
     "fluent-ffmpeg": "^2.1.2",
+    "mongodb": "^3.6.4",
     "nodemon": "^2.0.7",
     "socket.io": "^3.0.4",
     "socket.io-stream": "^0.9.1",
