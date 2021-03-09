@@ -20,9 +20,6 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.resolve('./synk-music-ui/build')))
 
-app.get('/', (request, response) => {
-    response.sendFile(path.resolve('./synk-music-ui/build', 'index.html'));
-  });
 
 // let rawData = fs.readFileSync("./client-info.json")
 // let data = JSON.parse(rawData)
@@ -300,6 +297,10 @@ io.on("connection", (socket) => {
     // input.pipe(stream)
 
 })
+
+app.get('*', (request, response) => {
+    response.sendFile(path.resolve('./synk-music-ui/build', 'index.html'));
+  });
 
 http.listen(PORT, () => {
     console.log("listening on port: 5000")
