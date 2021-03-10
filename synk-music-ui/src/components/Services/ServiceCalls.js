@@ -77,10 +77,19 @@ export function deleteParty(data) {
         }
     })
 }
-export function youtubeSearch(data){
+export function youtubeSearch(data) {
     return axios.get("/youtubeSearch", {
-        headers:{
-            "Content-Type":"application/json"
+        headers: {
+            "Content-Type": "application/json"
+        },
+        params: data
+    })
+}
+
+export async function checkPartyExists(data) {
+    return await axios.get("/checkPartyExists", {
+        headers: {
+            "Content-Type": "application/json"
         },
         params: data
     })

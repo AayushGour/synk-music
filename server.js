@@ -57,24 +57,24 @@ app.get("/getStream", (req, res) => {
     // ) {
     //     try {
     //         var stream = ytdl(req.query.url, { filter: "audioonly" });
-            // var totalAudioLength = 10000
-            // res.setHeader("Accept-Ranges", "bytes")
-            // videoID = ytdl.getVideoID(req.query.url)
+    // var totalAudioLength = 10000
+    // res.setHeader("Accept-Ranges", "bytes")
+    // videoID = ytdl.getVideoID(req.query.url)
 
-            // console.log(req.headers.range);
-            // ytdl.getBasicInfo(videoID).then(result => {
-            //     console.log(result)
-            // })
-            // stream.on("progress", (length, downloaded, totalLength) => {
-            // totalAudioLength = totalLength
-            // console.log(totalAudioLength)
-            // console.log(length, downloaded, totalLength)
-            // })
-            // res.writeHead(200, {
-            //     "Accept-Ranges": "bytes",
-            //     "Content-Length": totalAudioLength,
-            //     "Content-Range": "bytes 0-" + totalAudioLength
-            // })
+    // console.log(req.headers.range);
+    // ytdl.getBasicInfo(videoID).then(result => {
+    //     console.log(result)
+    // })
+    // stream.on("progress", (length, downloaded, totalLength) => {
+    // totalAudioLength = totalLength
+    // console.log(totalAudioLength)
+    // console.log(length, downloaded, totalLength)
+    // })
+    // res.writeHead(200, {
+    //     "Accept-Ranges": "bytes",
+    //     "Content-Length": totalAudioLength,
+    //     "Content-Range": "bytes 0-" + totalAudioLength
+    // })
     //         stream.pipe(res);
     //     } catch (exception) {
     //         res.status(500).send(exception);
@@ -82,15 +82,15 @@ app.get("/getStream", (req, res) => {
     // } else {
     //     res.status(400).send("Bad Request!!! Please check the values");
     // }
-    service.findByPartyName(req.query.partyName).then(result=>{
-        if(result !== null && req.query.url !== ""){
+    service.findByPartyName(req.query.partyName).then(result => {
+        if (result !== null && req.query.url !== "") {
             try {
                 var stream = ytdl(req.query.url, { filter: "audioonly" });
                 stream.pipe(res);
             } catch (error) {
                 res.status(500).send(exception);
             }
-        }else {
+        } else {
             res.status(400).send("Bad Request!!! Please check the values");
         }
     })
@@ -164,9 +164,9 @@ app.get("/test", (req, res) => {
 });
 
 app.put("/updateTutorialStatus", (req, res) => {
-    service.findByPartyAndHostNames(
-        req.body.partyName,
-        req.body.hostName
+    console.log(req.body)
+    service.findByPartyName(
+        req.body.partyName
     ).then((result) => {
         if (result !== null) {
             service.updateData(constants.tutorialStatus, req.body.tutorialStatus, req.body.partyName).then((result) => {
@@ -205,6 +205,23 @@ app.get("/validateGuestPartyRequest", (req, res) => {
     });
 });
 
+app.get("/checkPartyExists", (req, res) => {
+    service.findByPartyName(
+        req.query.partyName
+    ).then((result) => {
+        if ((result !== null && result !== undefined) && result.partyStatus === true) {
+            var response = {};
+            response.hostName = result.hostName;
+            response.partyName = result.partyName;
+
+            res.status(200).send(response);
+        } else {
+            res.status(404).send("Failed");
+        }
+
+    });
+});
+
 app.get("/validateHostPartyRequest", (req, res) => {
     service.findByPartyAndHostNames(
         req.query.partyName,
@@ -229,6 +246,8 @@ app.get("/validateHostPartyRequest", (req, res) => {
 
     });
 });
+
+
 
 io.on("connection", (socket) => {
     // const stream = ss.createStream();
@@ -269,44 +288,44 @@ io.on("connection", (socket) => {
             });
         }
     });
-    socket.on("update-current-song", (data) => {
+    socket.on(constants.UPDATE_CURRENT_SONG, (data) => {
         // console.log('play or pause', data)
-        let rawData = fs.readFileSync("userData.json");
-        let userData = JSON.parse(rawData);
-        let userIndex = userData.indexOf(
-            userData.find((item) => {
-                return item.partyName === roomId;
-            })
-        );
-        if (userIndex !== undefined && userIndex > -1) {
-            // console.log(userIndex)
-            if (userData[userIndex].currentSong !== data.currentSong) {
-                userData[userIndex].currentSong = data.currentSong;
-                fs.writeFileSync("userData.json", JSON.stringify(userData, null, 4));
-                io.to(roomId).emit("song-updated", {
-                    currentTime: data.currentTime,
-                    status: data.status,
-                    refresh: false,
-                });
+        // let rawData = fs.readFileSync("userData.json");
+        // let userData = JSON.parse(rawData);
+        // let userIndex = userData.indexOf(
+        //     userData.find((item) => {
+        //         return item.partyName === roomId;
+        //     })
+        // );
+        // if (userIndex !== undefined && userIndex > -1) {
+        //     // console.log(userIndex)
+        //     if (userData[userIndex].currentSong !== data.currentSong) {
+        //         userData[userIndex].currentSong = data.currentSong;
+        //         fs.writeFileSync("userData.json", JSON.stringify(userData, null, 4));
+        //         io.to(roomId).emit("song-updated", {
+        //             currentTime: data.currentTime,
+        //             status: data.status,
+        //             refresh: false,
+        //         });
+        //     }
+        // } else {
+        //     io.to(roomId).emit("song-updated", {
+        //         currentTime: data.currentTime,
+        //         status: data.status,
+        //         refresh: true,
+        //     });
+        // }
+        service.findByPartyName(data.partyName).then(result => {
+            if (result !== null) {
+                result.currentSong = data.url;
+                service.updateData(constants.currentSong, data.url, data.partyName);
+                socket.to(data.partyName).emit(constants.SONG_UPDATED, {
+                    currentTime: result.currentTime,
+                    url: data.url
+                })
             }
-        } else {
-            io.to(roomId).emit("song-updated", {
-                currentTime: data.currentTime,
-                status: data.status,
-                refresh: true,
-            });
-        }
+        })
     });
-    socket.on("get-stream", () => {
-        var stream = ss.createStream();
-        console.log("hello");
-        ss(socket).emit("audio-stream", stream);
-        ytdl("https://www.youtube.com/watch?v=FHVD9ft_ANw", {
-            filter: "audioonly",
-        }).pipe(stream);
-    });
-
-    // input.pipe(stream)
 });
 
 app.get("*", (request, response) => {

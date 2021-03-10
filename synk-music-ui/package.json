@@ -27,7 +27,6 @@
     "react-scripts": "^4.0.1",
     "react-swipeable-views": "^0.13.9",
     "redux": "^4.0.5",
-    "simpleyt": "^1.0.7",
     "socket.io": "^3.0.4",
     "socket.io-client": "^3.0.4",
     "web-vitals": "^0.2.4"

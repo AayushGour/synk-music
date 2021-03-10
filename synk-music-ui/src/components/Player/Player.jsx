@@ -44,7 +44,7 @@ class Player extends Component {
                 try {
                     this.handlePlayPause()
                 } catch (exception) {
-                    console.log()
+                    console.log(exception)
                 }
             }
         }

@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 class MobileTutorial extends Component {
     constructor(props) {
         super(props);
-        this.state = {  };
+        this.state = {};
     }
     handleClose = () => {
         // send request to backend also
         this.props.dispatchToStore("DISPLAY_TUTORIAL", { displayTutorial: false })
-        Service.updateTutorialStatus({ partyName: this.props.globalState.userData.partyName, displayTutorial: false })
+        Service.updateTutorialStatus({ partyName: this.props.globalState.userData.partyName, tutorialStatus: false })
     }
     render() {
         return (

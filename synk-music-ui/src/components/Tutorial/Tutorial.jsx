@@ -92,7 +92,7 @@ class Tutorial extends Component {
         this.props.getExistingSongs()
         // send request to backend also
         this.props.dispatchToStore("DISPLAY_TUTORIAL", { displayTutorial: false })
-        Service.updateTutorialStatus({ partyName: this.props.globalState.userData.partyName, displayTutorial: false })
+        Service.updateTutorialStatus({ partyName: this.props.globalState.userData.partyName, tutorialStatus: false })
     }
 
     navigationButtons = (classes) => {
