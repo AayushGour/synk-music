@@ -30,7 +30,7 @@ class App extends Component {
             {/* Display Header */}
             <Header />
             <Switch>
-              <ProtectedRoute path="/host" component={Host} />
+              <Route path="/host" component={Host} />
               <Route path="/party" component={Party} />
               <Route path="/" exact component={Home} />
               <Route path="/*" component={Error404} />
