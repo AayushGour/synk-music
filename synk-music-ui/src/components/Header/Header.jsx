@@ -141,7 +141,7 @@ class Header extends Component {
         this.userData = JSON.parse(localStorage.getItem("userInfo"));
         this.shareLinkRef = createRef();
     }
-    componentDidMount = () => {
+    setShareText = () => {
         var url = `${window.location.origin}/party/${window.location.pathname.split("/")[2]}`;
         var text = "Hey, join me on my musical adventure. Follow the link below -\n" + url
         this.setState({ shareUrl: url, shareText: text })
@@ -152,6 +152,7 @@ class Header extends Component {
     };
 
     shareModalDisplay = () => {
+        this.setShareText();
         this.setState({ shareModal: true })
     }
 
