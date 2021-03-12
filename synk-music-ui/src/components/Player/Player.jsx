@@ -39,15 +39,16 @@ class Player extends Component {
         //         },
         //         () => this.getVideoDetails()
         //     );
-        document.body.onkeyup = (e) => {
-            if (e.keyCode === 32) {
-                try {
-                    this.handlePlayPause()
-                } catch (exception) {
-                    console.log(exception)
+        if (this.props.user === "host")
+            document.body.onkeyup = (e) => {
+                if (e.keyCode === 32) {
+                    try {
+                        this.handlePlayPause()
+                    } catch (exception) {
+                        console.log(exception)
+                    }
                 }
             }
-        }
 
         setInterval(() => {
             this.setState({ circleOffset: this.youtubeAudio != undefined && this.youtubeAudio.duration > 0 ? 1 - ((this.youtubeAudio.currentTime / this.youtubeAudio.duration) / 2) : 1 })
@@ -154,7 +155,7 @@ class Player extends Component {
                                 className="back"
                                 onClick={() => this.props.onPlayPreviousClicked()}
                                 title="Play Previous"
-                            // disabled={this.props.url === "" ? true : false}
+                                disabled={this.props.user === "party" ? true : false}
                             >
                                 <FontAwesomeIcon icon={faFastBackward} size="1x" />
                             </button>
@@ -162,7 +163,7 @@ class Player extends Component {
                                 this.handlePlayPause()
                             }}
                                 title="Play (Space)"
-                            // disabled={this.props.url === "" ? true : false}
+                                disabled={this.props.user === "party" ? true : false}
                             >
                                 {this.state.playing ?
                                     <FontAwesomeIcon icon={faPause} size="1x" />
@@ -173,7 +174,7 @@ class Player extends Component {
                                 className="forward"
                                 onClick={() => this.props.onPlayNextClicked()}
                                 title="Play Next"
-                            // disabled={this.props.url === "" ? true : false}
+                                disabled={this.props.user === "party" ? true : false}
                             >
                                 <FontAwesomeIcon icon={faFastForward} size="1x" />
                             </button>

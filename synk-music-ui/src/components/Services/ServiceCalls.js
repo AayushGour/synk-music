@@ -71,10 +71,11 @@ export function updateTutorialStatus(data) {
     })
 }
 export function deleteParty(data) {
-    return axios.delete("/deleteParty", data, {
+    return axios.delete("/deleteParty", {
         headers: {
             "content-Type": "application/json"
-        }
+        },
+        params: data
     })
 }
 export function youtubeSearch(data) {

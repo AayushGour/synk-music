@@ -95,7 +95,7 @@ const deleteParty = (partyName) => {
             var dbo = db.db(constants.dbName);
             var query = { partyName: partyName }
             try {
-                dbo.collection(constants.collectionName).deleteOne(query, () => {
+                dbo.collection(constants.collectionName).deleteOne(query, (result) => {
                     if (err) reject(err);
                     resolve(result);
                     db.close();

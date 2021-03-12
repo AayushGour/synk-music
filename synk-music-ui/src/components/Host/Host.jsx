@@ -174,7 +174,7 @@ class Host extends Component {
         };
         this.socket = socketIOClient();
         this.myAudio = null;
-        this.playerRef = createRef();
+        // this.playerRef = createRef();
     }
 
     componentDidMount = () => {
@@ -900,7 +900,7 @@ class Host extends Component {
                                     }}
                                 ></div>
                                 <Player
-                                    ref={(reference) => (this.playerRef = reference)}
+                                    user="host"
                                     url={this.state.currentSongUrl}
                                     onPlayNextClicked={this.playNextSong}
                                     onPlayPreviousClicked={this.playPreviousSong}

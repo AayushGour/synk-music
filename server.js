@@ -111,11 +111,13 @@ app.get("/getSongs", (req, res) => {
 });
 
 app.delete("/deleteParty", (req, res) => {
-    service.deleteParty(req.body.partyName).then(result => {
+    service.findByPartyName(req.query.partyName).then(result => {
         if (result !== null) {
-            res.status(200).send("success");
+            service.deleteParty(req.query.partyName).then(() => {
+                res.status(200).send("success");
+            })
         } else {
-            res.status(400).send("Bad Request!!! Party Not Found");
+            res.status(400).send("bad Request. Party Not found")
         }
     })
 });

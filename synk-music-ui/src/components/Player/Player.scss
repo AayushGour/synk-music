@@ -146,6 +146,10 @@
 
     &:disabled {
         color: grey;
+        &:hover {
+            transition: none;
+            transform: none;
+        }
 
     }
 
