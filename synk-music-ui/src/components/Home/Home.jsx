@@ -140,14 +140,11 @@ class Home extends Component {
 
             }
         }).catch(error => {
-            if (error.response.status === 409) {
-                this.setState({
-                    displayLoader: false,
-                    displayHostPartyExistsError: true
-                })
-            } else {
-                console.error(error.response)
-            }
+            this.setState({
+                displayLoader: false,
+                displayHostPartyExistsError: true
+            })
+
         })
 
     }

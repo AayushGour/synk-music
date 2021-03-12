@@ -259,11 +259,7 @@ class Host extends Component {
                 .then((response) => {
                     if (response.status === 200) {
                         this.setState(
-                            { existingSongs: response.data, loaderDisplay: false },
-                            () => {
-                                console.log(response.data);
-                            }
-                        );
+                            { existingSongs: response.data, loaderDisplay: false });
                     }
                 })
                 .catch((error) => {
