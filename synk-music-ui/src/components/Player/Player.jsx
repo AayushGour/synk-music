@@ -114,8 +114,8 @@ class Player extends Component {
         return (
             <>
                 <canvas id="canvas"
-                    width={window.innerHeight === window.screen.height ? "850px" : "820px"}
-                    height={window.innerHeight === window.screen.height ? "850px" : "820px"}
+                    width={isMobile ? window.innerWidth : window.innerHeight === window.screen.height ? "850px" : "820px"}
+                    height={isMobile ? window.innerWidth : window.innerHeight === window.screen.height ? "850px" : "820px"}
                     style={{
                         position: "absolute",
                         top: "50%",
@@ -147,9 +147,6 @@ class Player extends Component {
                     >
                         <div
                             className="controls"
-                            style={{
-                                transform: isMobile ? "scale(0.9)" : ""
-                            }}
                         >
                             <button
                                 className="back"
@@ -194,13 +191,13 @@ class Player extends Component {
                                 <circle
                                     cx="50%"
                                     cy={isMobile ? "11%" : "3%"}
-                                    r={isMobile ? "46%" : "47%"}
+                                    r={isMobile ? "47%" : "47%"}
                                     stroke="#171717"
-                                    strokeWidth="20"
+                                    strokeWidth="10"
                                     fill="transparent"
                                     strokeLinecap="round"
-                                    strokeDasharray={`calc(2*${Math.PI}*${isMobile ? "80vw*0.46" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
-                                    strokeDashoffset={`calc(${Math.PI}*${isMobile ? "80vw*0.46" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
+                                    strokeDasharray={`calc(2*${Math.PI}*${isMobile ? "80vw*0.47" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
+                                    strokeDashoffset={`calc(${Math.PI}*${isMobile ? "80vw*0.47" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
 
 
                                 />
@@ -208,13 +205,13 @@ class Player extends Component {
                                 <circle
                                     cx="-50%"
                                     cy={isMobile ? "11%" : "3%"}
-                                    r={isMobile ? "46%" : "47%"}
+                                    r={isMobile ? "47%" : "47%"}
                                     stroke="#01a4e9"
-                                    strokeWidth="10"
+                                    strokeWidth="5"
                                     strokeLinecap="round"
                                     fill="transparent"
-                                    strokeDasharray={`calc(2*${Math.PI}*${isMobile ? "80vw*0.46" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
-                                    strokeDashoffset={`calc(2*${Math.PI}*${this.state.circleOffset}*${isMobile ? "80vw*0.46" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
+                                    strokeDasharray={`calc(2*${Math.PI}*${isMobile ? "80vw*0.47" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
+                                    strokeDashoffset={`calc(2*${Math.PI}*${this.state.circleOffset}*${isMobile ? "80vw*0.47" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
                                     style={{
                                         transform: "scaleX(-1)"
                                     }}
@@ -250,7 +247,7 @@ class Player extends Component {
                                 </Typography>
                             </span>
 
-                            <Typography variant={isMobile ? "subtitle1" : "h5"} noWrap={this.props.globalState.songDetails.title.length <= 80 ? false : true} style={{ marginTop: isMobile ? "8px" : "20px" }}>{this.props.globalState.songDetails.title}</Typography>
+                            <Typography variant={isMobile ? "subtitle1" : "h5"} noWrap={isMobile ? this.props.globalState.songDetails.title.length <= 30 ? false : true : this.props.globalState.songDetails.title.length <= 80 ? false : true} style={{ marginTop: isMobile ? "8px" : "20px" }}>{this.props.globalState.songDetails.title}</Typography>
                         </div>
                     </div>
                     <audio

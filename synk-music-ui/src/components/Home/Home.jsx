@@ -94,7 +94,8 @@ class Home extends Component {
             hostPartyName: "",
             displayLoader: false,
             displayGuestPartyNotFoundError: false,
-            displayHostPartyExistsError: false
+            displayHostPartyExistsError: false,
+            hostPartyErrorText: ""
         };
         this.tabsRef = createRef()
     }
@@ -140,10 +141,19 @@ class Home extends Component {
 
             }
         }).catch(error => {
-            this.setState({
-                displayLoader: false,
-                displayHostPartyExistsError: true
-            })
+            if (Number(error.response.status) === 400) {
+                this.setState({
+                    displayLoader: false,
+                    displayHostPartyExistsError: true,
+                    hostPartyErrorText: "The party already exists. Please use another name."
+                })
+            } else {
+                this.setState({
+                    displayLoader: false,
+                    displayHostPartyExistsError: true,
+                    hostPartyErrorText: "Request timed out"
+                })
+            }
 
         })
 
@@ -360,10 +370,10 @@ class Home extends Component {
                                 <Alert
                                     severity="error"
                                     className={classes.alert}
-                                    onClose={() => { this.setState({ displayHostPartyExistsError: false }) }}
+                                    onClose={() => { this.setState({ displayHostPartyExistsError: false, hostPartyErrorText: "" }) }}
                                 >
-                                    The party already exists. Please use another name.
-                </Alert>
+                                    {this.state.hostPartyErrorText}
+                                </Alert>
                                 : null}
                         </TabPanel>
 

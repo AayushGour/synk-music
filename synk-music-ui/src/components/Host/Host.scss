@@ -21,7 +21,6 @@
   .player-container {
     width: 72vh;
     height: 72vh;
-
   }
 }
 
@@ -66,23 +65,23 @@
 
 @keyframes change-aura-tutorial {
   0% {
-    box-shadow: 0 0 20px 0 red inset,
+    box-shadow: 0 0 20px 0 red inset;
   }
 
   25% {
-    box-shadow: 0 0 20px 0 purple inset,
+    box-shadow: 0 0 20px 0 purple inset;
   }
 
   50% {
-    box-shadow: 0 0 20px 0 blue inset,
+    box-shadow: 0 0 20px 0 blue inset;
   }
 
   75% {
-    box-shadow: 0 0 20px 0 blueviolet inset,
+    box-shadow: 0 0 20px 0 blueviolet inset;
   }
 
   100% {
-    box-shadow: 0 0 20px 0 green inset,
+    box-shadow: 0 0 20px 0 green inset;
   }
 }
 
@@ -106,18 +105,41 @@
   font-weight: 800;
   font-size: 1rem;
   padding: 16px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-@media screen and (max-device-width: 768px){
+@media screen and (max-device-width: 768px) {
   .MuiButtonBase-root.MuiTab-root {
     color: white;
     font-weight: 800;
     font-size: small;
     padding: 16px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
   }
-  
+  .dashboard {
+    height: calc(100vh - 58px);
+  }
+  .screen-1,
+  .screen-2 {
+    height: calc(100vh - 58px);
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  .player-and-list-component {
+    transform: none;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+  }
+  .tab-panel {
+    flex: 1 1;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 }
 
 .MuiCheckbox-colorSecondary.Mui-checked {
@@ -160,7 +182,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #01a4e999;
 }
-
 
 .pulse-div {
   display: block;
@@ -205,7 +226,7 @@
 @keyframes animate-div {
   0% {
     background-color: rgba(0, 0, 0, 0.8);
-    filter: blur(5px)
+    filter: blur(5px);
   }
 
   100% {

@@ -33,6 +33,7 @@ import Wave from "@foobar404/wave";
 import socketIOClient from "socket.io-client";
 import Tutorial from "../Tutorial/Tutorial";
 import MobileTutorial from "../Mobile Tutorial/MobileTutorial";
+import SwipeableViews from "react-swipeable-views";
 
 const useStyles = () => ({
     tabsRootContainer: {
@@ -85,10 +86,12 @@ const useStyles = () => ({
     },
     searchResultListItemTextPrimary: {
         color: "white",
+        whiteSpace: "nowrap"
     },
     searchResultListItemTextSecondary: {
         color: "#ffffffbb",
         marginTop: "10px",
+        whiteSpace: "nowrap"
     },
     textFieldRoot: {
         width: "80%",
@@ -171,6 +174,8 @@ class Host extends Component {
             ],
             wave: new Wave(),
             tutorialScreen: 0,
+            mobileTabsValue: 0,
+            swipeableViewIndex: 0
         };
         this.socket = socketIOClient();
         this.myAudio = null;
@@ -479,6 +484,9 @@ class Host extends Component {
                                     },
                                     () => {
                                         this.addToQueue();
+                                        if (isMobile) {
+                                            this.setState({ mobileTabsValue: 0 });
+                                        }
                                     }
                                 );
                             }}
@@ -603,7 +611,6 @@ class Host extends Component {
                                     this.setState(
                                         {
                                             existingSongs: existingSongsList.sort(),
-                                            leftListTabValue: 0,
                                             searchBarText: "",
                                             searchResults: [],
                                         },
@@ -611,6 +618,13 @@ class Host extends Component {
                                             var data = this.props.globalState.userData;
                                             data.songs = this.state.existingSongs;
                                             Service.updateSongList(data);
+                                            if (isMobile) {
+                                                this.setState({ mobileTabsValue: 1 })
+                                            } else {
+                                                this.setState({
+                                                    leftListTabValue: 0
+                                                })
+                                            }
                                         }
                                     );
                                 }}
@@ -623,6 +637,7 @@ class Host extends Component {
                                 <ListItemText
                                     primary={item.title}
                                     secondary={item.author.name}
+
                                     classes={{
                                         primary: classes.searchResultListItemTextPrimary,
                                         secondary: classes.searchResultListItemTextSecondary,
@@ -640,8 +655,219 @@ class Host extends Component {
                     // Mobile Screens
                     <>
                         {this.props.globalState.displayTutorial ? <MobileTutorial /> : null}
+                        <SwipeableViews index={this.state.swipeableViewIndex} style={{ height: "100%", width: "100%", overflow: "hidden" }} enableMouseEvents >
+                            <div className="player-and-list-component screen-1">
+                                <Player
+                                    user="host"
+                                    url={this.state.currentSongUrl}
+                                    onPlayNextClicked={this.playNextSong}
+                                    onPlayPreviousClicked={this.playPreviousSong}
+                                />
+                            </div>
+                            <div className="screen-2">
+                                <Tabs
+                                    // className={classes.mobileTabsRoot}
+                                    variant="fullWidth"
+                                    value={this.state.mobileTabsValue}
+                                    onChange={(event, newValue) => {
+                                        this.setState({
+                                            mobileTabsValue: newValue,
+                                        });
+                                    }}
+                                    indicatorColor="none"
+                                >
+                                    <Tab value={0} label="Song Queue" />
+                                    <Tab value={1} label="Existing Songs" />
+                                    <Tab value={2} label="Add a song" />
+                                </Tabs>
+                                {
+                                    this.state.mobileTabsValue === 0 ?
+                                        <div className="tab-panel tab-panel-0">
+                                            <div className="tabpanel-inner-container">
+                                                {this.state.songQueue.length === 0 ? (
+                                                    <Typography variant="h5">
+                                                        Queue is Empty <FontAwesomeIcon icon={faFrown} />
+                                                    </Typography>
+                                                ) : (
+                                                    <DragDropContext
+                                                        onDragEnd={(result) => this.onQueueDragEnd(result)}
+                                                    >
+                                                        <Droppable droppableId="droppable-queue">
+                                                            {(provided, snapshot) => (
+                                                                <RootRef rootRef={provided.innerRef}>
+                                                                    <List
+                                                                        className={classes.listRoot}
+                                                                        style={this.getListStyle(
+                                                                            snapshot.isDraggingOver
+                                                                        )}
+                                                                    >
+                                                                        {queueSongsList}
+                                                                        {provided.placeholder}
+                                                                    </List>
+                                                                </RootRef>
+                                                            )}
+                                                        </Droppable>
+                                                    </DragDropContext>
+                                                )}
+                                            </div>
+                                        </div>
+                                        :
+                                        this.state.mobileTabsValue === 1 ?
+                                            <div className="tab-panel tab-panel-1">
+                                                {/* Loader Display */}
+                                                <Loader
+                                                    background="linear-gradient(to right, #101010, #252525)"
+                                                    display={this.state.loaderDisplay}
+                                                    width="100%"
+                                                    height="100%"
+                                                />
 
-                        <div className="player-and-list-component"></div>
+                                                <div className="tabpanel-inner-container">
+                                                    {existingSongsList.length === 0 ? (
+                                                        <Typography variant="h5">
+                                                            Your List is Empty <FontAwesomeIcon icon={faFrown} />
+                                                        </Typography>
+                                                    ) : (
+                                                        <List className={classes.listRoot}>
+                                                            {existingSongsList}
+                                                        </List>
+                                                    )}
+                                                </div>
+                                                <Menu
+                                                    className={classes.menuRoot}
+                                                    anchorEl={this.state.menuAnchor}
+                                                    onClose={this.closeMenu}
+                                                    keepMounted
+                                                    open={Boolean(this.state.menuAnchor)}
+                                                >
+                                                    <MenuItem
+                                                        className={classes.menuItemRoot}
+                                                        onClick={() => {
+                                                            this.addToQueue();
+                                                            this.setState({ mobileTabsValue: 0 })
+                                                        }}
+                                                    >
+                                                        Add To Queue
+                                                    </MenuItem>
+                                                    <MenuItem
+                                                        className={classes.menuItemRoot}
+                                                        onClick={() => {
+                                                            var existingSongsList = this.state.existingSongs;
+                                                            existingSongsList.splice(
+                                                                this.state.selectedItemIndex,
+                                                                1
+                                                            );
+                                                            this.closeMenu();
+                                                            this.setState(
+                                                                { existingSongs: existingSongsList },
+                                                                () => {
+                                                                    var data = this.props.globalState.userData;
+                                                                    data.songs = this.state.existingSongs;
+                                                                    Service.updateSongList(data);
+                                                                }
+                                                            );
+                                                        }}
+                                                    >
+                                                        Remove Song
+                                                    </MenuItem>
+                                                </Menu>
+                                            </div>
+                                            :
+                                            <div className="tab-panel tab-panel-2">
+                                                <div className="tabpanel-inner-container">
+                                                    <Grid
+                                                        container
+                                                        direction="column"
+                                                        justify="flex-start"
+                                                        alignItems="center"
+                                                    >
+                                                        <Grid
+                                                            container
+                                                            item
+                                                            direction="row"
+                                                            justify="center"
+                                                            alignItems="flex-end"
+                                                        >
+                                                            <TextField
+                                                                className={classes.textFieldRoot}
+                                                                placeholder="Search"
+                                                                label="Search"
+                                                                value={this.state.searchBarText}
+                                                                fullWidth={true}
+                                                                autoFocus={true}
+                                                                InputProps={{
+                                                                    startAdornment: (
+                                                                        <InputAdornment position="start">
+                                                                            <Search className={classes.icons} />
+                                                                        </InputAdornment>
+                                                                    ),
+                                                                    classes: {
+                                                                        input: classes.textFieldInput,
+                                                                        underline: classes.textFieldUnderlineRoot,
+                                                                    },
+                                                                }}
+                                                                InputLabelProps={{
+                                                                    classes: {
+                                                                        root: classes.textFieldLabelRoot,
+                                                                        focused: "focused",
+                                                                        error: "error",
+                                                                    },
+                                                                }}
+                                                                onFocus={() => {
+                                                                    document.body.onkeyup = null;
+                                                                }}
+                                                                onChange={(event) => {
+                                                                    // Add action
+                                                                    this.setState({
+                                                                        searchBarText: event.target.value,
+                                                                    });
+                                                                }}
+                                                                onKeyPress={(event) => {
+                                                                    if (event.code === "Enter") {
+                                                                        // send request to youtube developers
+                                                                        document.body.onkeyup = (e) => {
+                                                                            if (e.keyCode === 32) {
+                                                                                try {
+                                                                                    this.handlePlayPause()
+                                                                                } catch (exception) {
+                                                                                    console.log(exception)
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        this.youtubeSearchFunction();
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <IconButton
+                                                                className={classes.iconButton}
+                                                                onClick={() => {
+                                                                    // send request to youtube developers
+                                                                    this.youtubeSearchFunction();
+                                                                }}
+                                                            >
+                                                                <Search className={classes.icons} />
+                                                            </IconButton>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Grid item style={{ width: "100%", height: "100%" }}>
+                                                        {/* Loader Display */}
+                                                        <Loader
+                                                            padding="0px"
+                                                            background="linear-gradient(to right, #101010, #252525)"
+                                                            display={this.state.loaderDisplay}
+                                                            width="100%"
+                                                            height="100%"
+                                                        />
+                                                        <List className={classes.listRoot}>
+                                                            {searchResults}
+                                                        </List>
+                                                    </Grid>
+                                                </div>
+                                            </div>
+                                }
+                            </div>
+                        </SwipeableViews>
                     </>
                 ) : (
                     //    Large Screens
