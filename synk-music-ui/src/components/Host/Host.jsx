@@ -187,10 +187,9 @@ class Host extends Component {
 
         // getting the existing song list
         const partyName = window.location.pathname.split("/")[2];
-        const party = { partyName: partyName }
+        const party = { partyName: partyName, user: "host" }
         Service.checkPartyExists(party).then((response) => {
             if (response.status === 200) {
-                console.log(response.status)
                 this.props.dispatchToStore("SET_USER_DETAILS", {
                     hostName: response.data.hostName,
                     partyName: partyName,
@@ -198,7 +197,6 @@ class Host extends Component {
                 // get tutorial status from backend
                 // if tutorial status is true, display tutorial
                 Service.getTutorialStatus(this.props.globalState.userData).then((response) => {
-                    console.log(response);
                     if (response.data) {
                         this.props.dispatchToStore("DISPLAY_TUTORIAL", {
                             displayTutorial: true,
@@ -362,6 +360,7 @@ class Host extends Component {
         };
         this.props.dispatchToStore("SET_SONG_DETAILS", songDetails);
         document.body.onkeyup = null;
+        // send request to backend to disable party
     };
 
     closeMenu = () => {
@@ -649,12 +648,11 @@ class Host extends Component {
 
         return (
             <div className="dashboard">
-                {/* Tutorial Component */}
 
                 {isMobile ? (
                     // Mobile Screens
                     <>
-                        {this.props.globalState.displayTutorial ? <MobileTutorial /> : null}
+                        {this.props.globalState.displayTutorial && <MobileTutorial />}
                         <SwipeableViews index={this.state.swipeableViewIndex} style={{ height: "100%", width: "100%", overflow: "hidden" }} enableMouseEvents >
                             <div className="player-and-list-component screen-1">
                                 <Player
@@ -679,6 +677,7 @@ class Host extends Component {
                                     <Tab value={0} label="Song Queue" />
                                     <Tab value={1} label="Existing Songs" />
                                     <Tab value={2} label="Add a song" />
+                                    <Tab value={3} label="Chat" />
                                 </Tabs>
                                 {
                                     this.state.mobileTabsValue === 0 ?
@@ -772,98 +771,101 @@ class Host extends Component {
                                                     </MenuItem>
                                                 </Menu>
                                             </div>
-                                            :
-                                            <div className="tab-panel tab-panel-2">
-                                                <div className="tabpanel-inner-container">
-                                                    <Grid
-                                                        container
-                                                        direction="column"
-                                                        justify="flex-start"
-                                                        alignItems="center"
-                                                    >
+                                            : this.state.mobileTabsValue === 2 ?
+                                                <div className="tab-panel tab-panel-2">
+                                                    <div className="tabpanel-inner-container">
                                                         <Grid
                                                             container
-                                                            item
-                                                            direction="row"
-                                                            justify="center"
-                                                            alignItems="flex-end"
+                                                            direction="column"
+                                                            justify="flex-start"
+                                                            alignItems="center"
                                                         >
-                                                            <TextField
-                                                                className={classes.textFieldRoot}
-                                                                placeholder="Search"
-                                                                label="Search"
-                                                                value={this.state.searchBarText}
-                                                                fullWidth={true}
-                                                                autoFocus={true}
-                                                                InputProps={{
-                                                                    startAdornment: (
-                                                                        <InputAdornment position="start">
-                                                                            <Search className={classes.icons} />
-                                                                        </InputAdornment>
-                                                                    ),
-                                                                    classes: {
-                                                                        input: classes.textFieldInput,
-                                                                        underline: classes.textFieldUnderlineRoot,
-                                                                    },
-                                                                }}
-                                                                InputLabelProps={{
-                                                                    classes: {
-                                                                        root: classes.textFieldLabelRoot,
-                                                                        focused: "focused",
-                                                                        error: "error",
-                                                                    },
-                                                                }}
-                                                                onFocus={() => {
-                                                                    document.body.onkeyup = null;
-                                                                }}
-                                                                onChange={(event) => {
-                                                                    // Add action
-                                                                    this.setState({
-                                                                        searchBarText: event.target.value,
-                                                                    });
-                                                                }}
-                                                                onKeyPress={(event) => {
-                                                                    if (event.code === "Enter") {
-                                                                        // send request to youtube developers
-                                                                        document.body.onkeyup = (e) => {
-                                                                            if (e.keyCode === 32) {
-                                                                                try {
-                                                                                    this.handlePlayPause()
-                                                                                } catch (exception) {
-                                                                                    console.log(exception)
+                                                            <Grid
+                                                                container
+                                                                item
+                                                                direction="row"
+                                                                justify="center"
+                                                                alignItems="flex-end"
+                                                            >
+                                                                <TextField
+                                                                    className={classes.textFieldRoot}
+                                                                    placeholder="Search"
+                                                                    label="Search"
+                                                                    value={this.state.searchBarText}
+                                                                    fullWidth={true}
+                                                                    autoFocus={true}
+                                                                    InputProps={{
+                                                                        startAdornment: (
+                                                                            <InputAdornment position="start">
+                                                                                <Search className={classes.icons} />
+                                                                            </InputAdornment>
+                                                                        ),
+                                                                        classes: {
+                                                                            input: classes.textFieldInput,
+                                                                            underline: classes.textFieldUnderlineRoot,
+                                                                        },
+                                                                    }}
+                                                                    InputLabelProps={{
+                                                                        classes: {
+                                                                            root: classes.textFieldLabelRoot,
+                                                                            focused: "focused",
+                                                                            error: "error",
+                                                                        },
+                                                                    }}
+                                                                    onFocus={() => {
+                                                                        document.body.onkeyup = null;
+                                                                    }}
+                                                                    onChange={(event) => {
+                                                                        // Add action
+                                                                        this.setState({
+                                                                            searchBarText: event.target.value,
+                                                                        });
+                                                                    }}
+                                                                    onKeyPress={(event) => {
+                                                                        if (event.code === "Enter") {
+                                                                            // send request to youtube developers
+                                                                            document.body.onkeyup = (e) => {
+                                                                                if (e.keyCode === 32) {
+                                                                                    try {
+                                                                                        this.handlePlayPause()
+                                                                                    } catch (exception) {
+                                                                                        console.log(exception)
+                                                                                    }
                                                                                 }
                                                                             }
+                                                                            this.youtubeSearchFunction();
                                                                         }
+                                                                    }}
+                                                                />
+                                                                <IconButton
+                                                                    className={classes.iconButton}
+                                                                    onClick={() => {
+                                                                        // send request to youtube developers
                                                                         this.youtubeSearchFunction();
-                                                                    }
-                                                                }}
-                                                            />
-                                                            <IconButton
-                                                                className={classes.iconButton}
-                                                                onClick={() => {
-                                                                    // send request to youtube developers
-                                                                    this.youtubeSearchFunction();
-                                                                }}
-                                                            >
-                                                                <Search className={classes.icons} />
-                                                            </IconButton>
+                                                                    }}
+                                                                >
+                                                                    <Search className={classes.icons} />
+                                                                </IconButton>
+                                                            </Grid>
                                                         </Grid>
-                                                    </Grid>
 
-                                                    <Grid item style={{ width: "100%", height: "100%" }}>
-                                                        {/* Loader Display */}
-                                                        <Loader
-                                                            padding="0px"
-                                                            background="linear-gradient(to right, #101010, #252525)"
-                                                            display={this.state.loaderDisplay}
-                                                            width="100%"
-                                                            height="100%"
-                                                        />
-                                                        <List className={classes.listRoot}>
-                                                            {searchResults}
-                                                        </List>
-                                                    </Grid>
-                                                </div>
+                                                        <Grid item style={{ width: "100%", height: "100%" }}>
+                                                            {/* Loader Display */}
+                                                            <Loader
+                                                                padding="0px"
+                                                                background="linear-gradient(to right, #101010, #252525)"
+                                                                display={this.state.loaderDisplay}
+                                                                width="100%"
+                                                                height="100%"
+                                                            />
+                                                            <List className={classes.listRoot}>
+                                                                {searchResults}
+                                                            </List>
+                                                        </Grid>
+                                                    </div>
+                                                </div> :
+                                                <div className="tab-panel tab-panel-2">
+                                                    COMING SOON
                                             </div>
                                 }
                             </div>
@@ -1177,6 +1179,7 @@ class Host extends Component {
                                         indicatorColor="none"
                                     >
                                         <Tab value={0} label="Queue" />
+                                        <Tab value={1} label="Chat" />
                                     </Tabs>
                                     <TabPanel
                                         value={0}
@@ -1209,6 +1212,14 @@ class Host extends Component {
                                                 </DragDropContext>
                                             )}
                                         </div>
+                                    </TabPanel>
+                                    <TabPanel
+                                        value={1}
+                                        className={`${classes.tabPanel} ${classes.rightTabPanel}`}
+                                    >
+                                        <span style={{ fontFamily: "Montserrat" }}>
+                                            COMING SOON
+                                        </span>
                                     </TabPanel>
                                 </TabContext>
                             </div>

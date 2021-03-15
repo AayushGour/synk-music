@@ -95,3 +95,12 @@ export async function checkPartyExists(data) {
         params: data
     })
 }
+
+export function updatePartyStatus(data) {
+    return axios.get("/updatePartyStatus", {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        params: data
+    })
+}

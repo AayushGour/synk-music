@@ -198,7 +198,7 @@ app.get("/validateGuestPartyRequest", (req, res) => {
     service.findByPartyName(
         req.query.partyName
     ).then((result) => {
-        if ((result !== null && result !== undefined) && result.partyStatus === true) {
+        if ((result !== null && result !== undefined) && (result.partyStatus === true)) {
             res.status(200).send("Success");
         } else {
             res.status(404).send("Failed");
@@ -211,16 +211,25 @@ app.get("/checkPartyExists", (req, res) => {
     service.findByPartyName(
         req.query.partyName
     ).then((result) => {
-        if ((result !== null && result !== undefined) && result.partyStatus === true) {
+        if ((result !== null && result !== undefined) && (req.query.user === "party" && result.partyStatus === true)) {
             var response = {};
             response.hostName = result.hostName;
             response.partyName = result.partyName;
-
             res.status(200).send(response);
+        } else if ((result !== null && result !== undefined) && req.query.user === "host") {
+            service.updateData("partyStatus", true, req.query.partyName).then(updatedResponse => {
+                var response = {};
+                response.hostName = result.hostName;
+                response.partyName = result.partyName;
+                res.status(200).send(response);
+            });
         } else {
             res.status(404).send("Failed");
         }
 
+    }).catch(error => {
+        console.error(error);
+        res.status(404).send("Failed");
     });
 });
 
@@ -246,6 +255,18 @@ app.get("/validateHostPartyRequest", (req, res) => {
     })
 });
 
+app.get("/updatePartyStatus", (req, res) => {
+    service.findByPartyName(req.query.partyName).then(result => {
+        if (result !== null) {
+            service.updateData(constants.partyStatus, JSON.parse(req.query.partyStatus), req.query.partyName).then((result) => {
+                if (result !== null) {
+                    res.status(200).send("updated successfully");
+                }
+            })
+        }
+
+    })
+})
 
 
 io.on("connection", (socket) => {

@@ -193,7 +193,7 @@ class Player extends Component {
                                     cy={isMobile ? "11%" : "3%"}
                                     r={isMobile ? "47%" : "47%"}
                                     stroke="#171717"
-                                    strokeWidth="10"
+                                    strokeWidth={isMobile ? "10" : "20"}
                                     fill="transparent"
                                     strokeLinecap="round"
                                     strokeDasharray={`calc(2*${Math.PI}*${isMobile ? "80vw*0.47" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}
@@ -207,7 +207,7 @@ class Player extends Component {
                                     cy={isMobile ? "11%" : "3%"}
                                     r={isMobile ? "47%" : "47%"}
                                     stroke="#01a4e9"
-                                    strokeWidth="5"
+                                    strokeWidth={isMobile ? "5" : "10"}
                                     strokeLinecap="round"
                                     fill="transparent"
                                     strokeDasharray={`calc(2*${Math.PI}*${isMobile ? "80vw*0.47" : window.innerHeight === window.screen.height ? "56vh*0.47" : "60vh*0.47"})`}

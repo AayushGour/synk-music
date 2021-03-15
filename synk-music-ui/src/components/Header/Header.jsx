@@ -21,6 +21,8 @@ import {
 } from "react-share";
 import { Close } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
+import * as service from "../Services/ServiceCalls.js";
+import { createBrowserHistory } from 'history';
 
 const useStyles = () => ({
     typographyRoot: {
@@ -156,6 +158,14 @@ class Header extends Component {
         this.setState({ shareModal: true })
     }
 
+    logout = () => {
+        var party = { partyName: this.props.globalState.userData.partyName, partyStatus: false };
+        service.updatePartyStatus(party).then(response => {
+            createBrowserHistory().push("/");
+            window.location.reload();
+        })
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -173,7 +183,6 @@ class Header extends Component {
                             className={classes.textFieldRoot}
                             value={this.state.shareUrl}
                             fullWidth={true}
-                            autoFocus={true}
                             variant="outlined"
                             InputProps={{
                                 endAdornment: (
@@ -330,6 +339,7 @@ class Header extends Component {
                                     onClick={() => {
                                         this.closeMenu();
                                         // function to Logout
+                                        this.logout()
                                     }}
                                 >
                                     Logout
