@@ -241,11 +241,13 @@ app.get("/checkPartyExists", (req, res) => {
 
 app.get("/validateHostPartyRequest", (req, res) => {
     service.findByPartyName(req.query.partyName).then(result => {
-        if (result.hostName === req.query.hostName) {
-            res.status(200).send("logged in");
-        } else if (result.hostName !== req.query.hostName) {
-            res.status(400).send("Party Already Exists")
-        } else if (result === null || result === undefined) {
+        if (result !== null && result !== undefined) {
+            if (result.hostName === req.query.hostName) {
+                res.status(200).send("logged in");
+            } else {
+                res.status(400).send("Party Already Exists")
+            }
+        } else {
             newUserData = {
                 hostName: req.query.hostName,
                 partyName: req.query.partyName,
@@ -257,6 +259,7 @@ app.get("/validateHostPartyRequest", (req, res) => {
             };
             service.writeUserData(newUserData)
             res.status(200).send("Success");
+
         }
     })
 });
