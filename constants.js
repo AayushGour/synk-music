@@ -8,4 +8,5 @@ module.exports = {
     partyStatus: "partyStatus",
     UPDATE_CURRENT_SONG: "update-current-song",
     SONG_UPDATED: "song-updated",
+    PLAY_PAUSE: "play-pause"
 }

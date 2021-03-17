@@ -75,7 +75,7 @@ app.get("/getStream", (req, res) => {
     //     "Content-Length": totalAudioLength,
     //     "Content-Range": "bytes 0-" + totalAudioLength
     // })
-    //         stream.pipe(res);
+    // stream.pipe(res);
     //     } catch (exception) {
     //         res.status(500).send(exception);
     //     }
@@ -83,9 +83,15 @@ app.get("/getStream", (req, res) => {
     //     res.status(400).send("Bad Request!!! Please check the values");
     // }
     service.findByPartyName(req.query.partyName).then(result => {
-        if (result !== null && req.query.url !== "") {
+        if (result !== null) {
             try {
-                var stream = ytdl(req.query.url, { filter: "audioonly" });
+                var songurl = null;
+                if (req.query.url !== "undefined") {
+                    songurl = req.query.url;
+                } else {
+                    songurl = result.currentSong;
+                }
+                var stream = ytdl(songurl, { filter: "audioonly" });
                 stream.pipe(res);
             } catch (error) {
                 res.status(500).send(exception);
@@ -270,9 +276,6 @@ app.get("/updatePartyStatus", (req, res) => {
 
 
 io.on("connection", (socket) => {
-    // const stream = ss.createStream();
-    // input = fs.createReadStream("../EMP automation/county_list.json")
-    // input = fs.readFileSync("../EMP automation/county_list.json")
     // console.log(socket.id)
     var roomId = "";
     socket.on("connect-to-room", (data) => {
@@ -281,71 +284,24 @@ io.on("connection", (socket) => {
         io.to(roomId).emit("connected", "Connection Successful");
     });
     socket.on("play-pause", (data) => {
-        // console.log('play or pause', data)
-        let rawData = fs.readFileSync("userData.json");
-        let userData = JSON.parse(rawData);
-        let userIndex = userData.indexOf(
-            userData.find((item) => {
-                return item.partyName === roomId;
-            })
-        );
-        if (userIndex !== undefined && userIndex > -1) {
-            // console.log(userIndex)
-            if (userData[userIndex].currentSong !== data.currentSong) {
-                userData[userIndex].currentSong = data.currentSong;
-                fs.writeFileSync("userData.json", JSON.stringify(userData, null, 4));
-                io.to(roomId).emit("play-pause", {
-                    currentTime: data.currentTime,
-                    status: data.status,
-                    refresh: false,
-                });
-            }
-        } else {
-            io.to(roomId).emit("play-pause", {
-                currentTime: data.currentTime,
-                status: data.status,
-                refresh: true,
-            });
-        }
+        io.to(data.partyName).emit("play-pause", data);
     });
+    // socket.on(constants.UPDATE_CURRENT_SONG, (data) => {
+    //     service.findByPartyName(data.partyName).then(result => {
+    //         if (result !== null) {
+    //             service.updateData(constants.currentSong, data.url, data.partyName);
+    //             io.to(data.partyName).emit(constants.SONG_UPDATED, data)
+    //         }
+    //     })
+    // });
     socket.on(constants.UPDATE_CURRENT_SONG, (data) => {
-        // console.log('play or pause', data)
-        // let rawData = fs.readFileSync("userData.json");
-        // let userData = JSON.parse(rawData);
-        // let userIndex = userData.indexOf(
-        //     userData.find((item) => {
-        //         return item.partyName === roomId;
-        //     })
-        // );
-        // if (userIndex !== undefined && userIndex > -1) {
-        //     // console.log(userIndex)
-        //     if (userData[userIndex].currentSong !== data.currentSong) {
-        //         userData[userIndex].currentSong = data.currentSong;
-        //         fs.writeFileSync("userData.json", JSON.stringify(userData, null, 4));
-        //         io.to(roomId).emit("song-updated", {
-        //             currentTime: data.currentTime,
-        //             status: data.status,
-        //             refresh: false,
-        //         });
-        //     }
-        // } else {
-        //     io.to(roomId).emit("song-updated", {
-        //         currentTime: data.currentTime,
-        //         status: data.status,
-        //         refresh: true,
-        //     });
-        // }
-        service.findByPartyName(data.partyName).then(result => {
-            if (result !== null) {
-                result.currentSong = data.url;
-                service.updateData(constants.currentSong, data.url, data.partyName);
-                socket.to(data.partyName).emit(constants.SONG_UPDATED, {
-                    currentTime: result.currentTime,
-                    url: data.url
-                })
-            }
+        service.findByPartyName(data.partyName).then(response => {
+            console.log(data)
+            service.updateData(constants.currentSong, data.url, data.partyName).then(result => {
+                io.to(data.partyName).emit(constants.SONG_UPDATED, data)
+            });
         })
-    });
+    })
 });
 
 app.get("*", (request, response) => {

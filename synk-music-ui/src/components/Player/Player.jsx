@@ -62,8 +62,7 @@ class Player extends Component {
             colors: ["#01a4e9", "black"],
         });
         this.youtubeAudio.onended = () => {
-
-            this.props.onPlayNextClicked()
+            this.props.user === "host" && this.props.onPlayNextClicked();
         }
 
         this.youtubeAudio.onloadstart = () => {
@@ -75,7 +74,10 @@ class Player extends Component {
             this.setState({ loaderDisplay: false })
         }
         this.youtubeAudio.onplay = () => {
-            // this.setState({ loaderDisplay: false })
+            this.setState({ playing: true })
+        }
+        this.youtubeAudio.onpause = () => {
+            this.setState({ playing: false })
         }
 
     }
@@ -91,7 +93,8 @@ class Player extends Component {
 
     handlePlayPause = () => {
         // this.props.onPlayClicked();
-        this.state.playing ? this.youtubeAudio.pause() : this.youtubeAudio.play()
+        this.state.playing ? this.youtubeAudio.pause() : this.youtubeAudio.play();
+        this.props.user === "host" && this.props.onPlayPause(!this.state.playing, this.youtubeAudio.currentTime);
         this.setState({ playing: !this.youtubeAudio.paused })
     }
 
@@ -254,6 +257,7 @@ class Player extends Component {
                         id="audio"
                         controls
                         type="audio/mpeg"
+                        ref={this.props.forwardRef}
                     // style={{ display: "none" }}
                     />
                     {/* <ReactPlayer

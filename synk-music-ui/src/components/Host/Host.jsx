@@ -254,6 +254,11 @@ class Host extends Component {
         //   console.log(this.props.globalState.displayTutorial);
         //   this.getExistingSongs();
         // }
+
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            return this.logout();
+        })
     };
 
     getExistingSongs = () => {
@@ -318,10 +323,6 @@ class Host extends Component {
         );
         if (items[0].url !== this.state.songQueue[0]) {
             this.getVideoDetails(items[0].url);
-            this.socket.emit(Constants.UPDATE_CURRENT_SONG, {
-                url: items[0].url,
-                partyName: this.props.globalState.userData.partyName,
-            });
             // this.myAudio.load();
         }
         this.setState({
@@ -361,7 +362,15 @@ class Host extends Component {
         this.props.dispatchToStore("SET_SONG_DETAILS", songDetails);
         document.body.onkeyup = null;
         // send request to backend to disable party
+        this.logout();
     };
+
+    logout = () => {
+        var party = { partyName: this.props.globalState.userData.partyName, partyStatus: false };
+        Service.updatePartyStatus(party).then(response => {
+            this.props.history.push("/");
+        })
+    }
 
     closeMenu = () => {
         this.setState({ menuAnchor: null, selectedItemIndex: null });
@@ -374,7 +383,6 @@ class Host extends Component {
             this.state.songQueue.length
         );
         this.getVideoDetails(items[0].url);
-        // this.socket.emit("change-current-song", { currentSong: items[0].url })
         // this.myAudio.load();
         this.setState({
             songQueue: items,
@@ -387,7 +395,6 @@ class Host extends Component {
             0
         );
         this.getVideoDetails(items[0].url);
-        this.socket.emit("change-current-song", { currentSong: items[0].url });
         // this.myAudio.load();
 
         this.setState({
@@ -425,6 +432,11 @@ class Host extends Component {
         }
         this.setState({ songQueue: songQueue });
     };
+
+    onPlayPause = (playing, currentTime) => {
+        var requestObject = { playing: playing, partyName: this.props.globalState.userData.partyName, currentTime: currentTime }
+        this.socket.emit(Constants.PLAY_PAUSE, requestObject);
+    }
 
     youtubeSearchFunction = () => {
         this.setState({ loaderDisplay: true }, () => {
@@ -560,6 +572,7 @@ class Host extends Component {
                                                                 thumbnail_url: "",
                                                             };
                                                             console.log(array);
+                                                            this.socket.emit(Constants.UPDATE_CURRENT_SONG, { url: "", partyName: this.props.globalState.userData.partyName, currentTime: 0 })
                                                             this.props.dispatchToStore(
                                                                 "SET_SONG_DETAILS",
                                                                 data
@@ -657,9 +670,9 @@ class Host extends Component {
                             <div className="player-and-list-component screen-1">
                                 <Player
                                     user="host"
-                                    url={this.state.currentSongUrl}
                                     onPlayNextClicked={this.playNextSong}
                                     onPlayPreviousClicked={this.playPreviousSong}
+                                    onPlayPause={this.onPlayPause}
                                 />
                             </div>
                             <div className="screen-2">
@@ -824,15 +837,15 @@ class Host extends Component {
                                                                     onKeyPress={(event) => {
                                                                         if (event.code === "Enter") {
                                                                             // send request to youtube developers
-                                                                            document.body.onkeyup = (e) => {
-                                                                                if (e.keyCode === 32) {
-                                                                                    try {
-                                                                                        this.handlePlayPause()
-                                                                                    } catch (exception) {
-                                                                                        console.log(exception)
-                                                                                    }
-                                                                                }
-                                                                            }
+                                                                            // document.body.onkeyup = (e) => {
+                                                                            //     if (e.keyCode === 32) {
+                                                                            //         try {
+                                                                            //             this.handlePlayPause()
+                                                                            //         } catch (exception) {
+                                                                            //             console.log(exception)
+                                                                            //         }
+                                                                            //     }
+                                                                            // }
                                                                             this.youtubeSearchFunction();
                                                                         }
                                                                     }}
@@ -1060,15 +1073,15 @@ class Host extends Component {
                                                         onKeyPress={(event) => {
                                                             if (event.code === "Enter") {
                                                                 // send request to youtube developers
-                                                                document.body.onkeyup = (e) => {
-                                                                    if (e.keyCode === 32) {
-                                                                        try {
-                                                                            this.handlePlayPause()
-                                                                        } catch (exception) {
-                                                                            console.log(exception)
-                                                                        }
-                                                                    }
-                                                                }
+                                                                // document.body.onkeyup = (e) => {
+                                                                //     if (e.keyCode === 32) {
+                                                                //         try {
+                                                                //             this.handlePlayPause()
+                                                                //         } catch (exception) {
+                                                                //             console.log(exception)
+                                                                //         }
+                                                                //     }
+                                                                // }
                                                                 this.youtubeSearchFunction();
                                                             }
                                                         }}
@@ -1125,9 +1138,9 @@ class Host extends Component {
                                 ></div>
                                 <Player
                                     user="host"
-                                    url={this.state.currentSongUrl}
                                     onPlayNextClicked={this.playNextSong}
                                     onPlayPreviousClicked={this.playPreviousSong}
+                                    onPlayPause={this.onPlayPause}
                                 />
                             </div>
 
