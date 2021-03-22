@@ -20,9 +20,13 @@ class Party extends Component {
         this.socket = socketIOClient();
         this.userData = JSON.parse(localStorage.getItem("userInfo"));
         this.playerRef = React.createRef();
+        this.ss = require("socket.io-stream")
     }
 
     componentDidMount = () => {
+
+        var myAudio = document.getElementById("audio");
+
         // check if party exists
         const partyName = window.location.pathname.split("/")[2];
         var party = { partyName: partyName, user: "party" };
@@ -48,6 +52,24 @@ class Party extends Component {
                 this.playerRef.current.play();
             } else {
                 this.playerRef.current.pause()
+            }
+        })
+
+        // this.ss(this.socket).on("test-response", (stream, data) => {
+        this.socket.on("test-response", (stream) => {
+            // stream.write(this.ss.Buffer);
+            // var buff = []
+            // buff.push(stream)
+            // var blob = new Blob(buff, { 'type': 'audio/ogg; codecs=opus' });
+
+            // myAudio.srcObject = stream;
+            try {
+                // myAudio.src = window.URL.createObjectURL(blob);
+                // console.log(myAudio.src)
+                // myAudio.play()
+
+            } catch (err) {
+                console.log(err)
             }
         })
     }
@@ -92,12 +114,17 @@ class Party extends Component {
                     playing={this.state.playing}
                     user="party"
                 />
-                {/* <audio id="audio" controls >
-                    <source
-                        // src={`/getStream?partyName=bliss`}
-                        type="audio/mpeg"
-                    ></source>
-                </audio> */}
+                <div style={{ position: "absolute" }}>
+                    <button onClick={() => {
+                        this.socket.emit("test", "hi");
+                    }}>Click</button>
+                    <audio id="audio" controls >
+                        <source
+                            // src={`/getStream?partyName=bliss`}
+                            type="audio/mpeg"
+                        ></source>
+                    </audio>
+                </div>
             </div>
 
         );

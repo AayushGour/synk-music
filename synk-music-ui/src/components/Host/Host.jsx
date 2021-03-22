@@ -86,7 +86,6 @@ const useStyles = () => ({
     },
     searchResultListItemTextPrimary: {
         color: "white",
-        whiteSpace: "nowrap"
     },
     searchResultListItemTextSecondary: {
         color: "#ffffffbb",
@@ -641,11 +640,16 @@ class Host extends Component {
                                     );
                                 }}
                             >
-                                <img
-                                    src={item.thumbnails[0].url}
-                                    className="search-results-image"
-                                    alt="Youtube Item"
-                                />
+
+                                <div className="search-results-div">
+                                    <img
+                                        src={item.thumbnails[0].url}
+                                        className="search-results-image"
+                                        alt="Youtube Item"
+                                    />
+                                    <span className="search-result-duration">{item.duration}</span>
+
+                                </div>
                                 <ListItemText
                                     primary={item.title}
                                     secondary={item.author.name}

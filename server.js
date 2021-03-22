@@ -204,8 +204,10 @@ app.get("/validateGuestPartyRequest", (req, res) => {
     service.findByPartyName(
         req.query.partyName
     ).then((result) => {
-        if ((result !== null && result !== undefined) && (result.partyStatus === true)) {
-            res.status(200).send("Success");
+        if ((result !== null && result !== undefined) && (result.partyStatus !== true)) {
+            res.status(403).send("party inactive");
+        } else if ((result !== null && result !== undefined) && (result.partyStatus === true)) {
+            res.status(200).send("success");
         } else {
             res.status(404).send("Failed");
         }
@@ -304,6 +306,18 @@ io.on("connection", (socket) => {
                 io.to(data.partyName).emit(constants.SONG_UPDATED, data)
             });
         })
+    })
+
+    socket.on("test", (data) => {
+        var songurl = "https://www.youtube.com/watch?v=S2oxFIsENgM";
+        var audio = ytdl(songurl, { filter: "audioonly" });
+        console.log(audio)
+        var stream = ss.createStream();
+        // var arr = audio.toString('base64')
+        // socket.emit("test-response", audio)
+        audio.pipe(stream);
+
+        // stream.pipe(res);
     })
 });
 

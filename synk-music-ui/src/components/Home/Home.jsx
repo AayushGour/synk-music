@@ -93,7 +93,7 @@ class Home extends Component {
             hostName: "",
             hostPartyName: "",
             displayLoader: false,
-            displayGuestPartyNotFoundError: false,
+            displayGuestPartyNotFoundError: "",
             displayHostPartyExistsError: false,
             hostPartyErrorText: ""
         };
@@ -116,7 +116,12 @@ class Home extends Component {
             if (error.response.status === 404) {
                 this.setState({
                     displayLoader: false,
-                    displayGuestPartyNotFoundError: true
+                    displayGuestPartyNotFoundError: "This party does not exist."
+                })
+            } else if (error.response.status === 403) {
+                this.setState({
+                    displayLoader: false,
+                    displayGuestPartyNotFoundError: "This party is inactive at the moment."
                 })
             }
 
@@ -263,14 +268,14 @@ class Home extends Component {
                             </Button>
                             </div>
 
-                            {this.state.displayGuestPartyNotFoundError ?
+                            {this.state.displayGuestPartyNotFoundError !== "" ?
                                 <Alert
                                     severity="error"
                                     className={classes.alert}
-                                    onClose={() => { this.setState({ displayGuestPartyNotFoundError: false }) }}
+                                    onClose={() => { this.setState({ displayGuestPartyNotFoundError: "" }) }}
                                 >
-                                    This party does not exist.
-                            </Alert>
+                                    {this.state.displayGuestPartyNotFoundError}
+                                </Alert>
                                 : null}
                         </TabPanel>
                         <TabPanel
