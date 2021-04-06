@@ -24,9 +24,6 @@ class Party extends Component {
     }
 
     componentDidMount = () => {
-
-        var myAudio = document.getElementById("audio");
-
         // check if party exists
         const partyName = window.location.pathname.split("/")[2];
         var party = { partyName: partyName, user: "party" };
@@ -51,7 +48,7 @@ class Party extends Component {
             if (data.playing) {
                 this.playerRef.current.play();
             } else {
-                this.playerRef.current.pause()
+                this.playerRef.current.pause();
             }
         })
 
@@ -114,17 +111,6 @@ class Party extends Component {
                     playing={this.state.playing}
                     user="party"
                 />
-                <div style={{ position: "absolute" }}>
-                    <button onClick={() => {
-                        this.socket.emit("test", "hi");
-                    }}>Click</button>
-                    <audio id="audio" controls >
-                        <source
-                            // src={`/getStream?partyName=bliss`}
-                            type="audio/mpeg"
-                        ></source>
-                    </audio>
-                </div>
             </div>
 
         );

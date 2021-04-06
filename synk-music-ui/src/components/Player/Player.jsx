@@ -258,7 +258,7 @@ class Player extends Component {
                         controls
                         type="audio/mpeg"
                         ref={this.props.forwardRef}
-                    // style={{ display: "none" }}
+                        style={{ display: "none" }}
                     />
                     {/* <ReactPlayer
                         id="react-player"
