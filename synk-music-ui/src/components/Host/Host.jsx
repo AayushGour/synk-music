@@ -494,9 +494,9 @@ class Host extends Component {
                                     },
                                     () => {
                                         this.addToQueue();
-                                        if (isMobile) {
-                                            this.setState({ mobileTabsValue: 0 });
-                                        }
+                                        // if (isMobile) {
+                                        //     this.setState({ mobileTabsValue: 0 });
+                                        // }
                                     }
                                 );
                             }}
@@ -760,7 +760,7 @@ class Host extends Component {
                                                         className={classes.menuItemRoot}
                                                         onClick={() => {
                                                             this.addToQueue();
-                                                            this.setState({ mobileTabsValue: 0 })
+                                                            // this.setState({ mobileTabsValue: 0 })
                                                         }}
                                                     >
                                                         Add To Queue
