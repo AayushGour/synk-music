@@ -1,4 +1,4 @@
-import { Backdrop, Button, Dialog, IconButton, InputAdornment, Menu, MenuItem, Modal, Snackbar, TextField, Typography } from "@material-ui/core";
+import { Button, IconButton, InputAdornment, Menu, MenuItem, Modal, Snackbar, TextField, Typography } from "@material-ui/core";
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
 import SynkLogo from "./../../assets/images/Synklogo.png";
