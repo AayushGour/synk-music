@@ -70,6 +70,11 @@ class Player extends Component {
             this.props.globalState.songDetails.songUrl === "" ? this.setState({ loaderDisplay: false }) : this.setState({ loaderDisplay: true })
         }
 
+        this.youtubeAudio.onerror = () => {
+            console.log("An error Occurred");
+            this.setState({ loaderDisplay: false })
+        }
+
         this.youtubeAudio.onloadeddata = () => {
             this.setState({ loaderDisplay: false })
         }
