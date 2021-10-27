@@ -72,7 +72,11 @@ class Player extends Component {
 
         this.youtubeAudio.onerror = () => {
             console.log("An error Occurred");
-            this.setState({ loaderDisplay: false })
+            this.youtubeAudio.src = `/getStream?partyName=${this.props.globalState.userData.partyName}&url=${this.props.globalState.songDetails.songUrl}`
+            this.youtubeAudio.play();
+            this.setState({ playing: true, loaderDisplay: false })
+            // this.setState({ loaderDisplay: false });
+
         }
 
         this.youtubeAudio.onloadeddata = () => {
@@ -83,6 +87,12 @@ class Player extends Component {
         }
         this.youtubeAudio.onpause = () => {
             this.setState({ playing: false })
+        }
+        this.youtubeAudio.onwaiting = () => {
+            this.setState({ loaderDisplay: true })
+        }
+        this.youtubeAudio.oncanplay = () => {
+            this.setState({ loaderDisplay: false })
         }
 
     }
