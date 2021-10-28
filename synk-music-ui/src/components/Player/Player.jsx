@@ -26,7 +26,8 @@ class Player extends Component {
             wave: new Wave(),
             videoDetails: {
                 thumbnail_url: SynkLogo
-            }
+            },
+            canvasSize: 0.88 * window.innerHeight
         };
         this.youtubeAudio = null
     }
@@ -39,6 +40,12 @@ class Player extends Component {
         //         },
         //         () => this.getVideoDetails()
         //     );
+
+        //window resize function to set the height and width of the canvas
+        window.addEventListener("resize", (e) => {
+            this.setState({ canvasSize: 0.88 * window.innerHeight })
+        })
+
         if (this.props.user === "host")
             document.body.onkeyup = (e) => {
                 if (e.keyCode === 32) {
@@ -132,8 +139,10 @@ class Player extends Component {
         return (
             <>
                 <canvas id="canvas"
-                    width={isMobile ? window.innerWidth : window.innerHeight === window.screen.height ? "850px" : "820px"}
-                    height={isMobile ? window.innerWidth : window.innerHeight === window.screen.height ? "850px" : "820px"}
+                    // width={isMobile ? window.innerWidth : window.innerHeight === window.screen.height ? "850px" : "820px"}
+                    // height={isMobile ? window.innerWidth : window.innerHeight === window.screen.height ? "850px" : "820px"}
+                    width={isMobile ? window.innerWidth : this.state.canvasSize}
+                    height={isMobile ? window.innerWidth : this.state.canvasSize}
                     style={{
                         position: "absolute",
                         top: "50%",
