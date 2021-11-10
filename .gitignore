@@ -1,3 +1,4 @@
 node_modules
 package-lock.json
 /synk-ui/package-lock.json
+/synk-ui/node_modules
