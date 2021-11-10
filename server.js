@@ -93,7 +93,7 @@ app.get("/getStream", (req, res) => {
                 }
                 var stream = ytdl(songurl, { filter: "audioonly" });
                 stream.pipe(res);
-                res.end()
+                // res.end();
             } catch (error) {
                 res.status(500).send(exception);
             }
