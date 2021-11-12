@@ -29,7 +29,8 @@ class Player extends Component {
             },
             canvasSize: 0.88 * window.innerHeight
         };
-        this.youtubeAudio = null
+        this.youtubeAudio = null;
+        this.errorCount = 0;
     }
 
     componentDidMount = () => {
@@ -77,12 +78,17 @@ class Player extends Component {
             this.props.globalState.songDetails.songUrl === "" ? this.setState({ loaderDisplay: false }) : this.setState({ loaderDisplay: true })
         }
 
-        this.youtubeAudio.onerror = () => {
-            console.log("An error Occurred");
-            this.youtubeAudio.src = `/getStream?partyName=${this.props.globalState.userData.partyName}&url=${this.props.globalState.songDetails.songUrl}`
-            this.youtubeAudio.play();
-            this.setState({ playing: true, loaderDisplay: false })
-            // this.setState({ loaderDisplay: false });
+        this.youtubeAudio.onerror = (error) => {
+            this.errorCount += 1;
+            if (this.errorCount < 3) {
+                console.error(error);
+                this.youtubeAudio.src = `/getStream?partyName=${this.props.globalState.userData.partyName}&url=${this.props.globalState.songDetails.songUrl}`
+                this.youtubeAudio.play();
+                this.setState({ playing: true, loaderDisplay: false });
+            } else {
+                this.errorCount = 0;
+                this.setState({ playing: false, loaderDisplay: false });
+            }
 
         }
 
