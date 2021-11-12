@@ -87,7 +87,8 @@ class Player extends Component {
                 this.setState({ playing: true, loaderDisplay: false });
             } else {
                 this.errorCount = 0;
-                this.setState({ playing: false, loaderDisplay: false });
+                this.props.onPlayNextClicked()
+                this.setState({ loaderDisplay: false });
             }
 
         }
