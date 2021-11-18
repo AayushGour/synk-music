@@ -98,6 +98,10 @@ app.get("/getStream", (req, res) => {
                     console.log(err);
                     res.end();
                 })
+                stream.on('finish', err => {
+                    console.log(err);
+                    res.end();
+                })
             } catch (error) {
                 res.status(500).send(exception);
             }

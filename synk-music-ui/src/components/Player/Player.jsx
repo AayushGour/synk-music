@@ -8,6 +8,7 @@ import Loader from "./../Loader/Loader"
 import SynkLogo from "./../../assets/images/Synklogo.png"
 import { connect } from 'react-redux';
 import Wave from "@foobar404/wave"
+import ytdl from 'ytdl-core';
 
 
 class Player extends Component {
@@ -115,6 +116,7 @@ class Player extends Component {
         if (this.props.globalState.songDetails.songUrl !== nextProps.globalState.songDetails.songUrl) {
             // if song is changed, then refresh stream
             this.youtubeAudio.src = `/getStream?partyName=${this.props.globalState.userData.partyName}&url=${nextProps.globalState.songDetails.songUrl}`
+            // this.youtubeAudio.src = ytdl(nextProps.globalState.songDetails.songUrl, { filter: 'audioonly' });
             this.youtubeAudio.play();
             this.setState({ playing: true })
         }
