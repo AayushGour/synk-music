@@ -109,7 +109,12 @@ class Player extends Component {
         this.youtubeAudio.oncanplay = () => {
             this.setState({ loaderDisplay: false })
         }
-
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            this.props.onPlayPreviousClicked();
+        })
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            this.props.onPlayNextClicked();
+        })
     }
 
     componentWillReceiveProps = (nextProps) => {
