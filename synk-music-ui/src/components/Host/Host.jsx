@@ -476,7 +476,7 @@ class Host extends Component {
     };
 
     searchExistingSongs = () => {
-        let searchList = this.state.existingSongs.filter(element => element.title.toLowerCase().search(this.state.existingSongsSearchInput.toLowerCase()) >= 0)
+        let searchList = this.state.existingSongs.filter(element => element.title.replace(/\\$/, "").toLowerCase().search(this.state.existingSongsSearchInput.toLowerCase()) >= 0)
         this.setState({ existingSongsSearchList: searchList });
     }
 
@@ -1057,73 +1057,67 @@ class Host extends Component {
                                         />
 
                                         <div className="tabpanel-inner-container">
-                                            {existingSongsList.length === 0 ? (
-                                                <Typography variant="h5">
-                                                    Your List is Empty <FontAwesomeIcon icon={faFrown} />
-                                                </Typography>
-                                            ) : (
-                                                <>
-                                                    <Grid
-                                                        container
-                                                        item
-                                                        direction="row"
-                                                        justify="center"
-                                                        alignItems="flex-end"
-                                                    >
-                                                        <TextField
-                                                            style={{ flexGrow: "1", width: "auto", margin: "18px 18px 0px" }}
-                                                            className={classes.textFieldRoot}
-                                                            placeholder="Search"
-                                                            label="Search"
-                                                            value={this.state.existingSongsSearchInput}
-                                                            fullWidth={true}
-                                                            autoFocus={true}
-                                                            InputProps={{
-                                                                startAdornment: (
-                                                                    <InputAdornment position="start">
-                                                                        <Search className={classes.icons} />
-                                                                    </InputAdornment>
-                                                                ),
-                                                                classes: {
-                                                                    input: classes.textFieldInput,
-                                                                    underline: classes.textFieldUnderlineRoot,
-                                                                },
-                                                            }}
-                                                            InputLabelProps={{
-                                                                classes: {
-                                                                    root: classes.textFieldLabelRoot,
-                                                                    focused: "focused",
-                                                                    error: "error",
-                                                                },
-                                                            }}
-                                                            onFocus={() => {
-                                                                document.body.onkeyup = null;
-                                                            }}
-                                                            onChange={(event) => {
-                                                                // Add action
-                                                                this.setState({
-                                                                    existingSongsSearchInput: event.target.value,
-                                                                }, () => {
-                                                                    this.searchExistingSongs()
-                                                                });
-                                                            }}
-                                                        // onKeyPress={(event) => {
-                                                        //     if (event.code === "Enter") {
-                                                        //         // send request to youtube developers
-                                                        //         // document.body.onkeyup = (e) => {
-                                                        //         //     if (e.keyCode === 32) {
-                                                        //         //         try {
-                                                        //         //             this.handlePlayPause()
-                                                        //         //         } catch (exception) {
-                                                        //         //             console.log(exception)
-                                                        //         //         }
-                                                        //         //     }
-                                                        //         // }
-                                                        //         this.searchExistingSongs();
-                                                        //     }
-                                                        // }}
-                                                        />
-                                                        {/* <IconButton
+                                            <Grid
+                                                container
+                                                item
+                                                direction="row"
+                                                justify="flex-start"
+                                                alignItems="flex-end"
+                                            >
+                                                <TextField
+                                                    style={{ flexGrow: "1", width: "auto", margin: "18px 18px 0px" }}
+                                                    className={classes.textFieldRoot}
+                                                    placeholder="Search"
+                                                    label="Search"
+                                                    value={this.state.existingSongsSearchInput}
+                                                    fullWidth={true}
+                                                    autoFocus={true}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <Search className={classes.icons} />
+                                                            </InputAdornment>
+                                                        ),
+                                                        classes: {
+                                                            input: classes.textFieldInput,
+                                                            underline: classes.textFieldUnderlineRoot,
+                                                        },
+                                                    }}
+                                                    InputLabelProps={{
+                                                        classes: {
+                                                            root: classes.textFieldLabelRoot,
+                                                            focused: "focused",
+                                                            error: "error",
+                                                        },
+                                                    }}
+                                                    onFocus={() => {
+                                                        document.body.onkeyup = null;
+                                                    }}
+                                                    onChange={(event) => {
+                                                        // Add action
+                                                        this.setState({
+                                                            existingSongsSearchInput: event.target.value,
+                                                        }, () => {
+                                                            this.searchExistingSongs()
+                                                        });
+                                                    }}
+                                                // onKeyPress={(event) => {
+                                                //     if (event.code === "Enter") {
+                                                //         // send request to youtube developers
+                                                //         // document.body.onkeyup = (e) => {
+                                                //         //     if (e.keyCode === 32) {
+                                                //         //         try {
+                                                //         //             this.handlePlayPause()
+                                                //         //         } catch (exception) {
+                                                //         //             console.log(exception)
+                                                //         //         }
+                                                //         //     }
+                                                //         // }
+                                                //         this.searchExistingSongs();
+                                                //     }
+                                                // }}
+                                                />
+                                                {/* <IconButton
                                                             className={classes.iconButton}
                                                             onClick={() => {
                                                                 // send request to youtube developers
@@ -1132,7 +1126,13 @@ class Host extends Component {
                                                         >
                                                             <Search className={classes.icons} />
                                                         </IconButton> */}
-                                                    </Grid>
+                                            </Grid>
+                                            {existingSongsList.length === 0 ? (
+                                                <Typography variant="h5" style={{ paddingTop: "5rem" }}>
+                                                    Your List is Empty <FontAwesomeIcon icon={faFrown} />
+                                                </Typography>
+                                            ) : (
+                                                <>
                                                     <List className={classes.listRoot}>
                                                         {existingSongsList}
                                                     </List>
