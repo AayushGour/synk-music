@@ -713,9 +713,17 @@ class Host extends Component {
                                         <div className="tab-panel tab-panel-0">
                                             <div className="tabpanel-inner-container">
                                                 {this.state.songQueue.length === 0 ? (
-                                                    <Typography variant="h5">
-                                                        Queue is Empty <FontAwesomeIcon icon={faFrown} />
-                                                    </Typography>
+                                                    <Grid
+                                                        container
+                                                        item
+                                                        direction="row"
+                                                        justify="center"
+                                                        alignItems="center"
+                                                        style={{ flexGrow: "1" }}>
+                                                        <Typography variant="h5">
+                                                            Queue is Empty <FontAwesomeIcon icon={faFrown} />
+                                                        </Typography>
+                                                    </Grid>
                                                 ) : (
                                                     <DragDropContext
                                                         onDragEnd={(result) => this.onQueueDragEnd(result)}
@@ -751,72 +759,67 @@ class Host extends Component {
                                                 />
 
                                                 <div className="tabpanel-inner-container">
-                                                    {existingSongsList.length === 0 ? (
-                                                        <Typography variant="h5">
-                                                            Your List is Empty <FontAwesomeIcon icon={faFrown} />
-                                                        </Typography>
-                                                    ) : (<>
-                                                        <Grid
-                                                            container
-                                                            item
-                                                            direction="row"
-                                                            justify="center"
-                                                            alignItems="flex-end"
-                                                        >
-                                                            <TextField
-                                                                style={{ flexGrow: "1", width: "auto", margin: "18px 18px 0px" }}
-                                                                className={classes.textFieldRoot}
-                                                                placeholder="Search"
-                                                                label="Search"
-                                                                value={this.state.existingSongsSearchInput}
-                                                                fullWidth={true}
-                                                                autoFocus={true}
-                                                                InputProps={{
-                                                                    startAdornment: (
-                                                                        <InputAdornment position="start">
-                                                                            <Search className={classes.icons} />
-                                                                        </InputAdornment>
-                                                                    ),
-                                                                    classes: {
-                                                                        input: classes.textFieldInput,
-                                                                        underline: classes.textFieldUnderlineRoot,
-                                                                    },
-                                                                }}
-                                                                InputLabelProps={{
-                                                                    classes: {
-                                                                        root: classes.textFieldLabelRoot,
-                                                                        focused: "focused",
-                                                                        error: "error",
-                                                                    },
-                                                                }}
-                                                                onFocus={() => {
-                                                                    document.body.onkeyup = null;
-                                                                }}
-                                                                onChange={(event) => {
-                                                                    // Add action
-                                                                    this.setState({
-                                                                        existingSongsSearchInput: event.target.value,
-                                                                    }, () => {
-                                                                        this.searchExistingSongs()
-                                                                    });
-                                                                }}
-                                                            // onKeyPress={(event) => {
-                                                            //     if (event.code === "Enter") {
-                                                            //         // send request to youtube developers
-                                                            //         // document.body.onkeyup = (e) => {
-                                                            //         //     if (e.keyCode === 32) {
-                                                            //         //         try {
-                                                            //         //             this.handlePlayPause()
-                                                            //         //         } catch (exception) {
-                                                            //         //             console.log(exception)
-                                                            //         //         }
-                                                            //         //     }
-                                                            //         // }
-                                                            //         this.searchExistingSongs();
-                                                            //     }
-                                                            // }}
-                                                            />
-                                                            {/* <IconButton
+                                                    <Grid
+                                                        container
+                                                        item
+                                                        direction="row"
+                                                        justify="center"
+                                                        alignItems="flex-end"
+                                                    >
+                                                        <TextField
+                                                            style={{ flexGrow: "1", width: "auto", margin: "18px 18px 0px" }}
+                                                            className={classes.textFieldRoot}
+                                                            placeholder="Search"
+                                                            label="Search"
+                                                            value={this.state.existingSongsSearchInput}
+                                                            fullWidth={true}
+                                                            autoFocus={true}
+                                                            InputProps={{
+                                                                startAdornment: (
+                                                                    <InputAdornment position="start">
+                                                                        <Search className={classes.icons} />
+                                                                    </InputAdornment>
+                                                                ),
+                                                                classes: {
+                                                                    input: classes.textFieldInput,
+                                                                    underline: classes.textFieldUnderlineRoot,
+                                                                },
+                                                            }}
+                                                            InputLabelProps={{
+                                                                classes: {
+                                                                    root: classes.textFieldLabelRoot,
+                                                                    focused: "focused",
+                                                                    error: "error",
+                                                                },
+                                                            }}
+                                                            onFocus={() => {
+                                                                document.body.onkeyup = null;
+                                                            }}
+                                                            onChange={(event) => {
+                                                                // Add action
+                                                                this.setState({
+                                                                    existingSongsSearchInput: event.target.value,
+                                                                }, () => {
+                                                                    this.searchExistingSongs()
+                                                                });
+                                                            }}
+                                                        // onKeyPress={(event) => {
+                                                        //     if (event.code === "Enter") {
+                                                        //         // send request to youtube developers
+                                                        //         // document.body.onkeyup = (e) => {
+                                                        //         //     if (e.keyCode === 32) {
+                                                        //         //         try {
+                                                        //         //             this.handlePlayPause()
+                                                        //         //         } catch (exception) {
+                                                        //         //             console.log(exception)
+                                                        //         //         }
+                                                        //         //     }
+                                                        //         // }
+                                                        //         this.searchExistingSongs();
+                                                        //     }
+                                                        // }}
+                                                        />
+                                                        {/* <IconButton
                                                             className={classes.iconButton}
                                                             onClick={() => {
                                                                 // send request to youtube developers
@@ -825,10 +828,33 @@ class Host extends Component {
                                                         >
                                                             <Search className={classes.icons} />
                                                         </IconButton> */}
+                                                    </Grid>
+                                                    {existingSongsList.length === 0 ? (
+                                                        <Grid
+                                                            container
+                                                            item
+                                                            direction="column"
+                                                            justify="center"
+                                                            alignItems="center"
+                                                            style={{
+                                                                flexGrow: "1"
+                                                            }}
+                                                        >
+                                                            <Typography variant="h5">
+                                                                Your List is Empty <FontAwesomeIcon icon={faFrown} />
+                                                            </Typography>
                                                         </Grid>
-                                                        <List className={classes.listRoot}>
-                                                            {existingSongsList}
-                                                        </List>
+                                                    ) : (<>
+                                                        <Grid
+                                                            container
+                                                            item
+                                                            direction="row"
+                                                            justify="center"
+                                                            alignItems="flex-start">
+                                                            <List className={classes.listRoot}>
+                                                                {existingSongsList}
+                                                            </List>
+                                                        </Grid>
                                                     </>
                                                     )}
                                                 </div>
@@ -1128,14 +1154,30 @@ class Host extends Component {
                                                         </IconButton> */}
                                             </Grid>
                                             {existingSongsList.length === 0 ? (
-                                                <Typography variant="h5" style={{ paddingTop: "5rem" }}>
-                                                    Your List is Empty <FontAwesomeIcon icon={faFrown} />
-                                                </Typography>
+                                                <Grid
+                                                    container
+                                                    item
+                                                    direction="row"
+                                                    justify="center"
+                                                    alignItems="center"
+                                                    style={{ flexGrow: "1" }}
+                                                >
+                                                    <Typography variant="h5" >
+                                                        Your List is Empty <FontAwesomeIcon icon={faFrown} />
+                                                    </Typography>
+                                                </Grid>
                                             ) : (
                                                 <>
-                                                    <List className={classes.listRoot}>
-                                                        {existingSongsList}
-                                                    </List>
+                                                    <Grid
+                                                        container
+                                                        item
+                                                        direction="row"
+                                                        justify="center"
+                                                        alignItems="flex-start">
+                                                        <List className={classes.listRoot}>
+                                                            {existingSongsList}
+                                                        </List>
+                                                    </Grid>
                                                 </>
                                             )}
                                         </div>
@@ -1359,9 +1401,18 @@ class Host extends Component {
                                     >
                                         <div className="tabpanel-inner-container">
                                             {this.state.songQueue.length === 0 ? (
-                                                <Typography variant="h5">
-                                                    Queue is Empty <FontAwesomeIcon icon={faFrown} />
-                                                </Typography>
+                                                <Grid
+                                                    container
+                                                    item
+                                                    direction="row"
+                                                    justify="center"
+                                                    alignItems="center"
+                                                    style={{ flexGrow: "1" }}>
+                                                    <Typography variant="h5">
+                                                        Queue is Empty <FontAwesomeIcon icon={faFrown} />
+                                                    </Typography>
+
+                                                </Grid>
                                             ) : (
                                                 <DragDropContext
                                                     onDragEnd={(result) => this.onQueueDragEnd(result)}
