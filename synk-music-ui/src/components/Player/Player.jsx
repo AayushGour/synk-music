@@ -8,7 +8,6 @@ import Loader from "./../Loader/Loader"
 import SynkLogo from "./../../assets/images/Synklogo.png"
 import { connect } from 'react-redux';
 import Wave from "@foobar404/wave"
-import ytdl from 'ytdl-core';
 
 
 class Player extends Component {

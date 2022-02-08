@@ -1,0 +1,5 @@
+node_modules
+package-lock.json
+
+synk-music-ui/node_modules
+synk-music-ui/package-lock.json

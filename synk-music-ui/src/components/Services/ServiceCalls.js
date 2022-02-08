@@ -1,6 +1,10 @@
 import axios from "axios";
 axios.defaults.timeout = 15000;
 
+// axios.interceptors.request.use((config) => {
+//     config.url = "http://localhost:5000" + config.url;
+// })
+
 export function validateHostPartyRequest(data) {
     return axios.get(`/validateHostPartyRequest`, {
         headers: {

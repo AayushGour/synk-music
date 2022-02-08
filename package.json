@@ -12,7 +12,8 @@
     "start": "concurrently --kill-others-on-fail \"nodemon server.js\" \"(cd synk-music-ui && npm start)\"",
     "dev": "concurrently --kill-others-on-fail \"nodemon server.js\" \"(cd synk-music-ui && npm start)\"",
     "build": "cd synk-music-ui && npm install && npm run build",
-    "local": "nodemon server.js"
+    "local": "nodemon server.js",
+    "serve": "concurrently --kill-others-on-fail \"node server.js\" \"(cd synk-music-ui && npm run serve)\""
   },
   "author": "",
   "license": "ISC",
