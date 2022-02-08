@@ -12,4 +12,5 @@ COPY ["synk-music-ui", "./"]
 WORKDIR /app
 RUN npm i --silent
 RUN npm run build
-ENTRYPOINT npm run serve
+# ENTRYPOINT npm run serve
+CMD [ "npm", "run", "serve" ]
