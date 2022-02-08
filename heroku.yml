@@ -1,5 +1,5 @@
 build:
   docker:
     web: Dockerfile
-release:
-  command: npm run serve
+run:
+  web: /bin/sh -c npm run serve
