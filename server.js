@@ -91,7 +91,7 @@ app.get("/getStream", (req, res) => {
                 } else {
                     songurl = result.currentSong;
                 }
-                var stream = ytdl(songurl, { filter: "audioonly" });
+                var stream = ytdl(songurl, { filter: "audioonly", begin: req.query?.begin });
                 stream.pipe(res);
                 // res.end();
                 stream.on('error', err => {
@@ -285,6 +285,14 @@ app.get("/updatePartyStatus", (req, res) => {
             })
         }
 
+    })
+})
+app.put("/updateCurrentSong", (req, res) => {
+    service.findByPartyName(req.body?.partyName).then(response => {
+        service.updateData(constants.currentSong, req.body?.url, req?.body?.partyName).then(result => {
+            res.status(200).send("Updated Successfully")
+            // io.to(data.partyName).emit(constants.SONG_UPDATED, data)
+        });
     })
 })
 

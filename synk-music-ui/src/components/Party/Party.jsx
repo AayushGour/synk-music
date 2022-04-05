@@ -17,10 +17,10 @@ class Party extends Component {
         this.state = {
             playing: false
         };
-        this.socket = socketIOClient();
+        // this.socket = socketIOClient();
         this.userData = JSON.parse(localStorage.getItem("userInfo"));
         this.playerRef = React.createRef();
-        this.ss = require("socket.io-stream")
+        // this.ss = require("socket.io-stream")
     }
 
     componentDidMount = () => {
@@ -31,44 +31,44 @@ class Party extends Component {
             if (response.status === 200) {
                 const userDetails = { hostName: response.data.hostName, partyName: partyName };
                 this.props.dispatchToStore("SET_USER_DETAILS", userDetails)
-                this.socket.emit(Constants.CONNECT_TO_ROOM, partyName);
+                // this.socket.emit(Constants.CONNECT_TO_ROOM, partyName);
             }
         }).catch(err => {
             console.error(err);
             this.props.history.push("/ERROR")
         })
         // update song
-        this.socket.on(Constants.SONG_UPDATED, (data) => {
-            // myAudio.src = `/getStream?partyName=${data.partyName}&url=${data.url}`;
-            // myAudio.play();
-            this.getVideoDetails(data.url, data.partyName);
-        })
+        // this.socket.on(Constants.SONG_UPDATED, (data) => {
+        // myAudio.src = `/getStream?partyName=${data.partyName}&url=${data.url}`;
+        // myAudio.play();
+        // this.getVideoDetails(data.url, data.partyName);
+        // })
 
-        this.socket.on(Constants.PLAY_PAUSE, (data) => {
-            if (data.playing) {
-                this.playerRef.current.play();
-            } else {
-                this.playerRef.current.pause();
-            }
-        })
+        // this.socket.on(Constants.PLAY_PAUSE, (data) => {
+        //     if (data.playing) {
+        //         this.playerRef.current.play();
+        //     } else {
+        //         this.playerRef.current.pause();
+        //     }
+        // })
 
         // this.ss(this.socket).on("test-response", (stream, data) => {
-        this.socket.on("test-response", (stream) => {
-            // stream.write(this.ss.Buffer);
-            // var buff = []
-            // buff.push(stream)
-            // var blob = new Blob(buff, { 'type': 'audio/ogg; codecs=opus' });
+        // this.socket.on("test-response", (stream) => {
+        // stream.write(this.ss.Buffer);
+        // var buff = []
+        // buff.push(stream)
+        // var blob = new Blob(buff, { 'type': 'audio/ogg; codecs=opus' });
 
-            // myAudio.srcObject = stream;
-            try {
-                // myAudio.src = window.URL.createObjectURL(blob);
-                // console.log(myAudio.src)
-                // myAudio.play()
+        // myAudio.srcObject = stream;
+        // try {
+        // myAudio.src = window.URL.createObjectURL(blob);
+        // console.log(myAudio.src)
+        // myAudio.play()
 
-            } catch (err) {
-                console.log(err)
-            }
-        })
+        //     } catch (err) {
+        //         console.log(err)
+        //     }
+        // })
     }
 
     getVideoDetails = (item, partyName) => {

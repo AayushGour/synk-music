@@ -178,7 +178,7 @@ class Host extends Component {
             existingSongsSearchInput: "",
             existingSongsSearchList: []
         };
-        this.socket = socketIOClient();
+        // this.socket = socketIOClient();
         this.myAudio = null;
         // this.playerRef = createRef();
     }
@@ -203,7 +203,7 @@ class Host extends Component {
                             displayTutorial: true,
                         });
                         // connecting to room
-                        this.socket.emit(Constants.CONNECT_TO_ROOM, this.props.globalState.userData.partyName);
+                        // this.socket.emit(Constants.CONNECT_TO_ROOM, this.props.globalState.userData.partyName);
                     } else {
                         this.getExistingSongs();
                     }
@@ -297,7 +297,8 @@ class Host extends Component {
                         url: item,
                         partyName: this.props.globalState.userData.partyName,
                     };
-                    this.socket.emit(Constants.UPDATE_CURRENT_SONG, requestObject);
+                    // this.socket.emit(Constants.UPDATE_CURRENT_SONG, requestObject);
+                    Service.updateCurrentSong(requestObject);
                     this.props.dispatchToStore("SET_SONG_DETAILS", data);
                 })
                 .catch((error) => console.error(error));
@@ -378,16 +379,18 @@ class Host extends Component {
     };
 
     playNextSong = () => {
-        var items = this.reorderElements(
-            this.state.songQueue,
-            0,
-            this.state.songQueue.length
-        );
-        this.getVideoDetails(items[0].url);
-        // this.myAudio.load();
-        this.setState({
-            songQueue: items,
-        });
+        if (!!this.state.songQueue && this.state.songQueue?.length > 0) {
+            var items = this.reorderElements(
+                this.state.songQueue,
+                0,
+                this.state.songQueue.length
+            );
+            this.getVideoDetails(items[0].url);
+            // this.myAudio.load();
+            this.setState({
+                songQueue: items,
+            });
+        }
     };
     playPreviousSong = () => {
         var items = this.reorderElements(
@@ -436,7 +439,7 @@ class Host extends Component {
 
     onPlayPause = (playing, currentTime) => {
         var requestObject = { playing: playing, partyName: this.props.globalState.userData.partyName, currentTime: currentTime }
-        this.socket.emit(Constants.PLAY_PAUSE, requestObject);
+        // this.socket.emit(Constants.PLAY_PAUSE, requestObject);
     }
 
     youtubeSearchFunction = () => {
@@ -582,8 +585,10 @@ class Host extends Component {
                                                                 songUrl: "",
                                                                 thumbnail_url: "",
                                                             };
-                                                            console.log(array);
-                                                            this.socket.emit(Constants.UPDATE_CURRENT_SONG, { url: "", partyName: this.props.globalState.userData.partyName, currentTime: 0 })
+                                                            // console.log(array);
+                                                            let requestObject = { url: "", partyName: this.props.globalState.userData.partyName, currentTime: 0 }
+                                                            Service.updateCurrentSong(requestObject);
+                                                            // this.socket.emit(Constants.UPDATE_CURRENT_SONG, { url: "", partyName: this.props.globalState.userData.partyName, currentTime: 0 })
                                                             this.props.dispatchToStore(
                                                                 "SET_SONG_DETAILS",
                                                                 data

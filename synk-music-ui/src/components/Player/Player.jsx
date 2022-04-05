@@ -59,7 +59,7 @@ class Player extends Component {
             }
 
         setInterval(() => {
-            this.setState({ circleOffset: this.youtubeAudio != undefined && this.youtubeAudio.duration > 0 ? 1 - ((this.youtubeAudio.currentTime / this.youtubeAudio.duration) / 2) : 1 })
+            this.state.playing && this.setState({ circleOffset: this.youtubeAudio != undefined && this.youtubeAudio.duration > 0 ? 1 - ((this.youtubeAudio.currentTime / this.youtubeAudio.duration) / 2) : 1 })
 
         }, 1000)
 
@@ -82,7 +82,7 @@ class Player extends Component {
             this.errorCount += 1;
             if (this.errorCount < 3) {
                 console.error(error);
-                this.youtubeAudio.src = `/getStream?partyName=${this.props.globalState.userData.partyName}&url=${this.props.globalState.songDetails.songUrl}`
+                this.youtubeAudio.src = `/getStream?partyName=${this.props.globalState.userData.partyName}&url=${this.props.globalState.songDetails.songUrl}&begin=${this.youtubeAudio?.currentTime}`
                 this.youtubeAudio.play();
                 this.setState({ playing: true, loaderDisplay: false });
             } else {
