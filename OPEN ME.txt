@@ -1,0 +1,11 @@
+single session handling
+stream music time
+ISO Time zone
+add play time when streaming
+-remove unnecessary packages from FE
+-add sharing options
+-logout
+-delete party
+-extract partyName from URL - done
+-check if party is active
+-Design Error404 page for mobile as well

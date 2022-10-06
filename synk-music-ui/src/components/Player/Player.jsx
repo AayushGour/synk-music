@@ -7,7 +7,7 @@ import "./Player.scss";
 import Loader from "./../Loader/Loader"
 import SynkLogo from "./../../assets/images/Synklogo.png"
 import { connect } from 'react-redux';
-import Wave from "@foobar404/wave"
+import Wave from "../foobar404";
 
 
 class Player extends Component {
@@ -64,11 +64,14 @@ class Player extends Component {
         }, 1000)
 
         this.youtubeAudio = document.getElementById('audio');
+
         this.state.wave.fromElement("audio", "canvas", {
             // options here
-            type: "shine",
-            colors: ["#01a4e9", "black"],
+            type: ["shine", "round wave"],
+            // type: "rings",
+            colors: ["#01a4e9", "transparent", "white", "transparent"],
         });
+
         this.youtubeAudio.onended = () => {
             this.props.user === "host" && this.props.onPlayNextClicked();
         }

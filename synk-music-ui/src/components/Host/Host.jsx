@@ -29,7 +29,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import * as Constants from "../../Constants.js";
 import Loader from "../Loader/Loader";
 import * as Service from "./../Services/ServiceCalls";
-import Wave from "@foobar404/wave";
+// import Wave from "@foobar404/wave";
 import socketIOClient from "socket.io-client";
 import Tutorial from "../Tutorial/Tutorial";
 import MobileTutorial from "../Mobile Tutorial/MobileTutorial";
@@ -171,7 +171,7 @@ class Host extends Component {
                 // { title: "Memories", url: "https://www.youtube.com/watch?v=SlPhMPnQ58k" },
                 // { title: "Freesol", url: "https://www.youtube.com/watch?v=7-9DJX8NlHU" },
             ],
-            wave: new Wave(),
+            // wave: new Wave(),
             tutorialScreen: 0,
             mobileTabsValue: 0,
             swipeableViewIndex: 0,
@@ -233,12 +233,12 @@ class Host extends Component {
 
 
 
-        // sound visualizer
-        this.state.wave.fromElement("audio", "canvas", {
-            // options here
-            type: "shine",
-            colors: ["#01a4e9", "black"],
-        });
+        // // sound visualizer
+        // this.state.wave.fromElement("audio", "canvas", {
+        //     // options here
+        //     type: "shine",
+        //     colors: ["#01a4e9", "black"],
+        // });
         var index = 1;
         var test = 0;
         var interval = setInterval(() => {
