@@ -3,7 +3,7 @@ FROM node:14-alpine
 # RUN apk add --update nodejs npm
 ENV NODE_ENV production
 RUN mkdir /app
-RUN npm i http-server -g
+RUN npm i -g http-server
 WORKDIR /app
 COPY ["package.json", "./**.js", "./"]
 RUN mkdir /synk-music-ui

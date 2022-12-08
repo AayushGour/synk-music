@@ -20,7 +20,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 
 // read and parse application/json
 app.use(bodyParser.json());
-app.use(express.static(path.resolve("./synk-music-ui/build")));
+// app.use(express.static(path.resolve("./synk-music-ui/build")));
 
 // let rawData = fs.readFileSync("./client-info.json")
 // let data = JSON.parse(rawData)
@@ -251,7 +251,7 @@ app.get("/checkPartyExists", (req, res) => {
 });
 
 app.get("/validateHostPartyRequest", (req, res) => {
-    service.findByPartyName(req.query.partyName).then(result => {
+    service.findByPartyAndHostNames(req.query.partyName, req.query.hostName).then(result => {
         if (result !== null && result !== undefined) {
             if (result.hostName === req.query.hostName) {
                 res.status(200).send("logged in");

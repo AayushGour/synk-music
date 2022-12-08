@@ -113,12 +113,12 @@ class Home extends Component {
                 })
             }
         }).catch(error => {
-            if (error.response.status === 404) {
+            if (error?.response?.status === 404) {
                 this.setState({
                     displayLoader: false,
                     displayGuestPartyNotFoundError: "This party does not exist."
                 })
-            } else if (error.response.status === 403) {
+            } else if (error?.response?.status === 403) {
                 this.setState({
                     displayLoader: false,
                     displayGuestPartyNotFoundError: "This party is inactive at the moment."
@@ -146,7 +146,7 @@ class Home extends Component {
 
             }
         }).catch(error => {
-            if (Number(error.response.status) === 400) {
+            if (Number(error?.response?.status) === 400) {
                 this.setState({
                     displayLoader: false,
                     displayHostPartyExistsError: true,
@@ -265,7 +265,7 @@ class Home extends Component {
                                     }}
                                 >
                                     Submit
-                            </Button>
+                                </Button>
                             </div>
 
                             {this.state.displayGuestPartyNotFoundError !== "" ?
@@ -369,7 +369,7 @@ class Home extends Component {
                                     }}
                                 >
                                     Submit
-                            </Button>
+                                </Button>
                             </div>
                             {this.state.displayHostPartyExistsError ?
                                 <Alert

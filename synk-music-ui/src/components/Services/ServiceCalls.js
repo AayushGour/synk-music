@@ -2,8 +2,8 @@ import axios from "axios";
 axios.defaults.timeout = 15000;
 
 axios.interceptors.request.use((config) => {
-    // config.url = "http://localhost:5000" + config.url;
-    config.url = "https://synk-music-backend.onrender.com" + config.url;
+    config.url = "http://localhost:5000" + config.url;
+    // config.url = "https://synk-music-backend.onrender.com" + config.url;
 })
 
 export function validateHostPartyRequest(data) {

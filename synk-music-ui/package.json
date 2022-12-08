@@ -41,7 +41,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "http-server build -p 80 -d false --cors  --proxy http://localhost:5000"
+    "serve": "http-server build -p 3000 -d false --cors  --proxy http://localhost:5000"
   },
   "proxy": "http://localhost:5000",
   "eslintConfig": {

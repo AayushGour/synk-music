@@ -8,7 +8,7 @@ const findByPartyAndHostNames = (partyName, hostName) => {
             var dbo = db.db(constants.dbName);
             try {
                 dbo
-                    .collection("user_data")
+                    .collection(constants.collectionName)
                     .findOne(
                         { partyName: partyName, hostName: hostName },
                         (err, result) => {
@@ -53,7 +53,7 @@ const writeUserData = (userData) => {
             if (err) reject(err);
             var dbo = db.db(constants.dbName);
             try {
-                dbo.collection("user_data").insertOne(userData, (err, result) => {
+                dbo.collection(constants.collectionName).insertOne(userData, (err, result) => {
                     if (err) reject(err)
                     resolve(result)
                     db.close();

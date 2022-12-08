@@ -189,6 +189,7 @@ class Host extends Component {
         // getting the existing song list
         const partyName = window.location.pathname.split("/")[2];
         const party = { partyName: partyName, user: "host" }
+        console.log(this.props.globalState.userData)
         Service.checkPartyExists(party).then((response) => {
             if (response.status === 200) {
                 this.props.dispatchToStore("SET_USER_DETAILS", {
