@@ -12,5 +12,5 @@ module.exports = {
 }
 
 // docker commands
-// build: docker build -t synk-music-image
+// build: docker build -t synk-music-image .
 // run: docker run -dt --name synk-music -p 3000:3000 -p 5000:5000 synk-music-image
